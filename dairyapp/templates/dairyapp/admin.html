@@ -6,6 +6,7 @@
     <title>Admin Panel – Dairy App</title>
     <link rel="stylesheet" href="{% static 'dairyapp/css/admin.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
 </head>
 <body>
 
@@ -31,25 +32,39 @@
         {% endif %}
     </div>
 
-    <!-- 🐄 Milking Data -->
+    <!-- 🐃 Buffalo Activity Logs -->
     <div class="panel">
-        <h2 class="section-title">🐄 Milking Data</h2>
-        {% if milking_data %}
-            <p><strong>Time:</strong> {{ milking_data.milk_time }}</p>
-            <p><strong>Quantity:</strong> {{ milking_data.milk_quantity }} litres</p>
-        {% else %}
-            <p>No milking data submitted yet.</p>
-        {% endif %}
-    </div>
+        <h2 class="section-title">🐃 Buffalo Activity Logs</h2>
 
-    <!-- 💊 Health Info -->
-    <div class="panel">
-        <h2 class="section-title">💊 Health Check Info</h2>
-        {% if health_data %}
-            <p>{{ health_data.health_notes }}</p>
-        {% else %}
-            <p>No health information submitted yet.</p>
-        {% endif %}
+        <h3>🥛 Milking Logs</h3>
+        <ul>
+            {% for m in today_milking %}
+                <li>
+                    Buffalo {{ m.buffalo_number }} – {{ m.milk_time }} – {{ m.milk_quantity }} L (by {{ m.submitted_by.username }})
+                    <form method="post" action="{% url 'delete_milking' m.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </li>
+            {% empty %}
+                <li>No milking logs today.</li>
+            {% endfor %}
+        </ul>
+
+        <h3>💊 Health Logs</h3>
+        <ul>
+            {% for h in today_health %}
+                <li>
+                    Buffalo {{ h.buffalo_number }} – {{ h.health_notes }} (by {{ h.submitted_by.username }})
+                    <form method="post" action="{% url 'delete_health' h.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </li>
+            {% empty %}
+                <li>No health logs today.</li>
+            {% endfor %}
+        </ul>
     </div>
 
     <!-- 👤 Create New User -->
@@ -70,68 +85,63 @@
         </form>
     </div>
 
-    <!-- 📋 Users List -->
+    <!-- 📋 Users Management -->
     <div class="panel">
-        <h2 class="section-title">📋 Users List</h2>
-
-        <h3>👷 Staff</h3>
-        <ul>
-            {% for user in staff_list %}
-                <li>{{ user.user.username }} ({{ user.custom_id }})</li>
-            {% empty %}
-                <li>No staff users found.</li>
-            {% endfor %}
-        </ul>
-
-        <h3>👨‍🌾 Workers</h3>
-        <ul>
-            {% for user in worker_list %}
-                <li>{{ user.user.username }} ({{ user.custom_id }})</li>
-            {% empty %}
-                <li>No worker users found.</li>
-            {% endfor %}
-        </ul>
-
-        <h3>🧑‍🤝‍🧑 Customers</h3>
-        <ul>
-            {% for user in customer_list %}
-                <li>{{ user.user.username }} ({{ user.custom_id }})</li>
-            {% empty %}
-                <li>No customer users found.</li>
-            {% endfor %}
-        </ul>
+        <h2 class="section-title">📋 Users Management</h2>
+        <button onclick="openUserModal()" class="btn btn-primary">Manage Users</button>
     </div>
 
-    <!-- 📅 Daily Activity Report -->
-    <div class="panel">
-        <h2 class="section-title">📅 Daily Activity Report – {{ today }}</h2>
+    <!-- 👥 User Modal -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeUserModal()">&times;</span>
+            <h3>Manage Users</h3>
 
-        <h3>🚚 Milk Deliveries</h3>
-        <ul>
-            {% for d in today_deliveries %}
-                <li>{{ d.customer_id }} - {{ d.time }} (by {{ d.submitted_by.username }})</li>
-            {% empty %}
-                <li>No milk deliveries today.</li>
-            {% endfor %}
-        </ul>
+            <h4>👷 Staff</h4>
+            <ul>
+                {% for user in staff_list %}
+                    <li>
+                        {{ user.user.username }} ({{ user.custom_id }})
+                        <form method="post" action="{% url 'delete_user' user.user.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </li>
+                {% empty %}
+                    <li>No staff users found.</li>
+                {% endfor %}
+            </ul>
 
-        <h3>🥛 Milking Logs</h3>
-        <ul>
-            {% for m in today_milking %}
-                <li>Buffalo {{ m.buffalo_number }} - {{ m.milk_time }} - {{ m.milk_quantity }}L (by {{ m.submitted_by.username }})</li>
-            {% empty %}
-                <li>No milking logs today.</li>
-            {% endfor %}
-        </ul>
+            <h4>👨‍🌾 Workers</h4>
+            <ul>
+                {% for user in worker_list %}
+                    <li>
+                        {{ user.user.username }} ({{ user.custom_id }})
+                        <form method="post" action="{% url 'delete_user' user.user.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </li>
+                {% empty %}
+                    <li>No worker users found.</li>
+                {% endfor %}
+            </ul>
 
-        <h3>💊 Health Logs</h3>
-        <ul>
-            {% for h in today_health %}
-                <li>Buffalo {{ h.buffalo_number }} – {{ h.health_notes }} (by {{ h.submitted_by.username }})</li>
-            {% empty %}
-                <li>No health logs today.</li>
-            {% endfor %}
-        </ul>
+            <h4>🧑‍🤝‍🧑 Customers</h4>
+            <ul>
+                {% for user in customer_list %}
+                    <li>
+                        {{ user.user.username }} ({{ user.custom_id }})
+                        <form method="post" action="{% url 'delete_user' user.user.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </li>
+                {% empty %}
+                    <li>No customer users found.</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 
     <!-- 📊 Charts -->
@@ -144,32 +154,6 @@
         <h3>Buffalo Milking per Day</h3>
         <canvas id="milkingChart"></canvas>
     </div>
-
-
-    <div class="dashboard-wrapper">
-  <!-- Sidebar -->
-   
-  <div class="toggle-btn" onclick="toggleSidebar()">☰</div>
-  <nav class="sidebar">
-    <div class="logo">Dairy App</div>
-    <ul>
-      <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
-      <li><a href="#">Users</a></li>
-      <li><a href="#">Reports</a></li>
-      <li><a href="{% url 'logout' %}">Logout</a></li>
-    </ul>
-  </nav>
-
-  <!-- Main content -->
-  <div class="main-content">
-    <!-- your .container, .panel, forms etc go here -->
-    <div class="container">
-      {% comment %} your existing content here {% endcomment %}
-    </div>
-  </div>
-</div>
-
-
 
     <!-- 🔚 Footer -->
     <div class="footer-links">
@@ -189,7 +173,6 @@
 <!-- 📈 Chart.js -->
 <script>
     const chartData = JSON.parse(document.getElementById('chart-data').textContent);
-
     new Chart(document.getElementById('deliveryChart'), {
         type: 'bar',
         data: {
@@ -204,10 +187,7 @@
             responsive: true,
             plugins: {
                 legend: { position: 'top' },
-                title: {
-                    display: true,
-                    text: 'Milk Deliveries Per Day'
-                }
+                title: { display: true, text: 'Milk Deliveries Per Day' }
             }
         }
     });
@@ -228,21 +208,18 @@
             responsive: true,
             plugins: {
                 legend: { position: 'top' },
-                title: {
-                    display: true,
-                    text: 'Milking Quantity Per Day'
-                }
+                title: { display: true, text: 'Milking Quantity Per Day' }
             }
         }
     });
-</script>
 
-<script>
-function toggleSidebar() {
-  document.querySelector('.sidebar').classList.toggle('active');
-}
+    function openUserModal() {
+        document.getElementById("userModal").style.display = "block";
+    }
+    function closeUserModal() {
+        document.getElementById("userModal").style.display = "none";
+    }
 </script>
-
 
 </body>
 </html>

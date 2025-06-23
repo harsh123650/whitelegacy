@@ -22,8 +22,12 @@ urlpatterns = [
     # Admin Features
     # ----------------------------
     path('create_user/', views.create_user_view, name='create_user'),
-    path('delete_delivery/<int:delivery_id>/', views.delete_delivery, name='delete_delivery'),
-    path('delete_delivery/<int:delivery_id>/', views.delete_delivery, name='delete_delivery'),
-    path('delete_milking_log/<int:log_id>/', views.delete_milking_log, name='delete_milking_log'),
+    # dairyapp/urls.py
+path('delete_user/<int:user_id>/', views.delete_user, name='delete_user'),
+path('delete_delivery/<int:delivery_id>/', views.delete_delivery, name='delete_delivery'),
+path('delete_milking/<int:milking_id>/', views.delete_milking, name='delete_milking'),
+path('delete_health/<int:health_id>/', views.delete_health, name='delete_health'),
+
+
 
 ]

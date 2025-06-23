@@ -1,3 +1,4 @@
+/* 🌿 Base Styling */
 body {
     font-family: 'Segoe UI', sans-serif;
     background: #f1f8e9;
@@ -5,49 +6,96 @@ body {
     padding: 0;
 }
 
+/* 🌸 Header */
 header {
     background-color: #C562AF;
     color: white;
-    padding: 20px;
+    padding: 25px;
     text-align: center;
+    font-size: 28px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* 📦 Container */
 .container {
-    padding: 40px;
-    max-width: 800px;
+    padding: 40px 20px;
+    max-width: 900px;
     margin: auto;
 }
 
+/* 📝 Title */
 h2 {
     text-align: center;
     color: #3C3D37;
     margin-bottom: 30px;
+    font-size: 26px;
 }
 
+/* 🧾 Panel Box */
 .panel-box {
     background-color: #E7EFC7;
-    padding: 20px;
-    margin-bottom: 20px;
+    padding: 24px;
+    margin-bottom: 25px;
     border-left: 6px solid #3C3D37;
-    border-radius: 10px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+    border-radius: 12px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
 }
 
+.panel-box:hover {
+    transform: translateY(-2px);
+}
+
+/* 🟩 Headings */
 .panel-box h3 {
     margin: 0 0 10px;
-    color: #3C3D37;
+    font-size: 20px;
+    color: #2C2D29;
 }
 
+/* 📄 Text */
 .panel-box p {
     margin: 0;
     color: #3C3D37;
+    font-size: 16px;
 }
 
+/* 📷 QR Image */
 .qr-image {
-    margin-top: 10px;
+    margin-top: 12px;
     width: 180px;
     border: 1px solid #ccc;
-    padding: 5px;
-    border-radius: 6px;
-    background: white;
+    padding: 6px;
+    border-radius: 8px;
+    background: #ffffff;
+    display: block;
+}
+
+/* 🦶 Footer (optional) */
+.footer {
+    text-align: center;
+    margin-top: 50px;
+    color: #777;
+    font-size: 14px;
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    header {
+        font-size: 22px;
+        padding: 20px 10px;
+    }
+
+    .panel-box {
+        padding: 18px;
+    }
+
+    .qr-image {
+        width: 150px;
+    }
 }

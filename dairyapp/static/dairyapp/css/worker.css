@@ -1,63 +1,106 @@
+/* 🌞 Base Styling */
 body {
     font-family: 'Segoe UI', sans-serif;
     background: #fffde7;
     margin: 0;
     padding: 0;
+    color: #333;
 }
 
+/* 🔆 Header */
 header {
     background-color: #f9a825;
     color: white;
-    padding: 20px;
+    padding: 24px;
     text-align: center;
+    font-size: 26px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
+/* 📦 Container */
 .container {
-    padding: 40px;
-    max-width: 700px;
+    padding: 40px 20px;
+    max-width: 720px;
     margin: auto;
 }
 
+/* 📝 Title */
 h2 {
     text-align: center;
     color: #f57f17;
     margin-bottom: 30px;
+    font-size: 24px;
 }
 
+/* 🧾 Form Box */
 form {
     background-color: #fff8e1;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-left: 5px solid #f9a825;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    padding: 25px;
+    margin-bottom: 30px;
+    border-left: 6px solid #f9a825;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
 }
 
+form:hover {
+    transform: translateY(-2px);
+}
+
+/* 🏷️ Labels */
 label {
     font-weight: bold;
     display: block;
-    margin-top: 10px;
+    margin-top: 12px;
+    color: #5d4037;
 }
 
-input[type="text"], input[type="date"], input[type="time"] {
+/* ✏️ Inputs */
+input[type="text"],
+input[type="date"],
+input[type="time"],
+select {
     width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border-radius: 5px;
-    border: 1px solid #aaa;
+    padding: 12px;
+    margin-top: 6px;
+    border-radius: 6px;
+    border: 1px solid #bbb;
+    font-size: 15px;
 }
 
-button {
+/* ✅ Buttons */
+button,
+input[type="submit"] {
     margin-top: 20px;
     background-color: #ffb300;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 22px;
     color: white;
-    font-weight: bold;
-    border-radius: 5px;
+    font-weight: 600;
+    border-radius: 6px;
     cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
 }
 
-button:hover {
+button:hover,
+input[type="submit"]:hover {
     background-color: #ffa000;
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    form {
+        padding: 20px;
+    }
+
+    header {
+        font-size: 22px;
+        padding: 20px;
+    }
 }

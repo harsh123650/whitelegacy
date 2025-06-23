@@ -5,22 +5,28 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from django.db.models import Count, Sum, DateField
-from django.db.models.functions import Cast  # ✅ Used instead of TruncDate
-from datetime import timedelta
+from django.db.models.functions import Cast
 from django.http import HttpResponse
+from datetime import timedelta
+
 from .models import MilkDelivery, MilkingLog, HealthLog, UserProfile
 from .forms import UserCreateForm
 
-
+# ----------------------------
+# Home Page
+# ----------------------------
 def index(request):
     return render(request, 'dairyapp/index.html')
 
-
+# ----------------------------
+# Login View
+# ----------------------------
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
 
+        # Hardcoded admin
         if username == "Harshal123" and password == "Harshal@123":
             user, created = User.objects.get_or_create(username=username)
             if created:
@@ -34,6 +40,7 @@ def login_view(request):
             login(request, user)
             return redirect('admin_dashboard')
 
+        # Regular login
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
@@ -50,32 +57,39 @@ def login_view(request):
         return render(request, 'dairyapp/login.html', {'error': 'Invalid credentials'})
     return render(request, 'dairyapp/login.html')
 
-
+# ----------------------------
+# Logout
+# ----------------------------
 @login_required
 def logout_view(request):
     logout(request)
     return redirect('login')
 
-
+# ----------------------------
+# Admin Dashboard
+# ----------------------------
 @login_required
 def admin_dashboard(request):
     try:
         today = timezone.now().date()
         start_date = today - timedelta(days=6)
 
+        # Users by role
         staff_users = UserProfile.objects.filter(role='staff')
         worker_users = UserProfile.objects.filter(role='worker')
         customer_users = UserProfile.objects.filter(role='customer')
 
+        # Today's records
         today_deliveries = MilkDelivery.objects.filter(date=today)
         today_milking = MilkingLog.objects.filter(date=today)
         today_health = HealthLog.objects.filter(date=today)
 
-        latest_delivery = MilkDelivery.objects.order_by('-id').first()
-        milking_data = MilkingLog.objects.order_by('-id').first()
-        health_data = HealthLog.objects.order_by('-id').first()
+        # Latest
+        latest_delivery = MilkDelivery.objects.last()
+        milking_data = MilkingLog.objects.last()
+        health_data = HealthLog.objects.last()
 
-        # ✅ Fixed for SQLite
+        # Chart Data (Last 7 Days)
         delivery_summary = (
             MilkDelivery.objects
             .filter(date__gte=start_date)
@@ -94,9 +108,9 @@ def admin_dashboard(request):
             .order_by('day')
         )
 
-        labels = [str(entry['day']) for entry in delivery_summary if entry['day']]
-        delivery_data = [entry['count'] for entry in delivery_summary if entry['day']]
-        milking_data_chart = [entry['total'] for entry in milking_summary if entry['day']]
+        labels = [str(entry['day']) for entry in delivery_summary]
+        delivery_data = [entry['count'] for entry in delivery_summary]
+        milking_data_chart = [entry['total'] for entry in milking_summary]
 
         context = {
             'latest_delivery': latest_delivery,
@@ -114,27 +128,42 @@ def admin_dashboard(request):
             'delivery_data': delivery_data,
             'milking_data_chart': milking_data_chart
         }
-
         return render(request, 'dairyapp/admin.html', context)
 
     except Exception as e:
         return HttpResponse(f"<h1>Error Occurred:</h1><p>{e}</p>")
 
+# ----------------------------
+# Delete Views
+# ----------------------------
+@login_required
+def delete_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    if user.username != 'Harshal123':
+        user.delete()
+    return redirect('admin_dashboard')
 
 @login_required
 def delete_delivery(request, delivery_id):
-    delivery = get_object_or_404(MilkDelivery, id=delivery_id)
-    delivery.delete()
+    entry = get_object_or_404(MilkDelivery, id=delivery_id)
+    entry.delete()
     return redirect('admin_dashboard')
-
 
 @login_required
-def delete_milking_log(request, log_id):
-    log = get_object_or_404(MilkingLog, id=log_id)
-    log.delete()
+def delete_milking(request, milking_id):
+    entry = get_object_or_404(MilkingLog, id=milking_id)
+    entry.delete()
     return redirect('admin_dashboard')
 
+@login_required
+def delete_health(request, health_id):
+    entry = get_object_or_404(HealthLog, id=health_id)
+    entry.delete()
+    return redirect('admin_dashboard')
 
+# ----------------------------
+# Staff Dashboard
+# ----------------------------
 @login_required
 def staff_dashboard(request):
     customers = UserProfile.objects.filter(role='customer')
@@ -147,25 +176,28 @@ def staff_dashboard(request):
         )
     return render(request, 'dairyapp/staff.html', {'customers': customers})
 
-
+# ----------------------------
+# Worker Dashboard
+# ----------------------------
 @login_required
 def worker_dashboard(request):
     return render(request, 'dairyapp/worker.html')
 
-
+# ----------------------------
+# Customer Dashboard
+# ----------------------------
 @login_required
 def customer_dashboard(request):
     profile = get_object_or_404(UserProfile, user=request.user)
-    deliveries = MilkDelivery.objects.filter(
-        customer_id=profile.custom_id
-    ).order_by('-date', '-time')
-
+    deliveries = MilkDelivery.objects.filter(customer_id=profile.custom_id).order_by('-date', '-time')
     return render(request, 'dairyapp/customer.html', {
         'latest_delivery': deliveries.first(),
         'all_deliveries': deliveries
     })
 
-
+# ----------------------------
+# Create New User
+# ----------------------------
 @csrf_exempt
 @login_required
 def create_user_view(request):
@@ -190,24 +222,11 @@ def create_user_view(request):
             UserProfile.objects.create(user=user, role=role, custom_id=new_custom_id)
             return redirect('admin_dashboard')
 
-        staff_users = UserProfile.objects.filter(role='staff')
-        worker_users = UserProfile.objects.filter(role='worker')
-        customer_users = UserProfile.objects.filter(role='customer')
-
-        context = {
-            'form': form,
-            'latest_delivery': MilkDelivery.objects.last(),
-            'milking_data': MilkingLog.objects.last(),
-            'health_data': HealthLog.objects.last(),
-            'staff_list': staff_users,
-            'worker_list': worker_users,
-            'customer_list': customer_users,
-        }
-        return render(request, 'dairyapp/admin.html', context)
-
     return redirect('admin_dashboard')
 
-
+# ----------------------------
+# Worker Data Submission
+# ----------------------------
 @login_required
 def submit_worker_data(request):
     if request.method == 'POST':
