@@ -1,0 +1,248 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel – Dairy App</title>
+    <link rel="stylesheet" href="{% static 'dairyapp/css/admin.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<header>
+    <h1>Welcome to Admin Panel</h1>
+</header>
+
+<div class="container">
+
+    <!-- 📦 Latest Milk Delivery -->
+    <div class="panel">
+        <h2 class="section-title">📦 Latest Milk Delivery</h2>
+        {% if latest_delivery %}
+            <p><strong>Customer ID:</strong> {{ latest_delivery.customer_id }}</p>
+            <p><strong>Date:</strong> {{ latest_delivery.date }}</p>
+            <p><strong>Time:</strong> {{ latest_delivery.time }}</p>
+            <form method="post" action="{% url 'delete_delivery' latest_delivery.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Delete Delivery</button>
+            </form>
+        {% else %}
+            <p>No delivery data submitted yet.</p>
+        {% endif %}
+    </div>
+
+    <!-- 🐄 Milking Data -->
+    <div class="panel">
+        <h2 class="section-title">🐄 Milking Data</h2>
+        {% if milking_data %}
+            <p><strong>Time:</strong> {{ milking_data.milk_time }}</p>
+            <p><strong>Quantity:</strong> {{ milking_data.milk_quantity }} litres</p>
+        {% else %}
+            <p>No milking data submitted yet.</p>
+        {% endif %}
+    </div>
+
+    <!-- 💊 Health Info -->
+    <div class="panel">
+        <h2 class="section-title">💊 Health Check Info</h2>
+        {% if health_data %}
+            <p>{{ health_data.health_notes }}</p>
+        {% else %}
+            <p>No health information submitted yet.</p>
+        {% endif %}
+    </div>
+
+    <!-- 👤 Create New User -->
+    <div class="panel">
+        <h2 class="section-title">👤 Create New User</h2>
+        <form method="post" action="{% url 'create_user' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.username.label_tag }} {{ form.username }}
+            </div>
+            <div class="form-group">
+                {{ form.password.label_tag }} {{ form.password }}
+            </div>
+            <div class="form-group">
+                {{ form.role.label_tag }} {{ form.role }}
+            </div>
+            <input type="submit" value="Create User">
+        </form>
+    </div>
+
+    <!-- 📋 Users List -->
+    <div class="panel">
+        <h2 class="section-title">📋 Users List</h2>
+
+        <h3>👷 Staff</h3>
+        <ul>
+            {% for user in staff_list %}
+                <li>{{ user.user.username }} ({{ user.custom_id }})</li>
+            {% empty %}
+                <li>No staff users found.</li>
+            {% endfor %}
+        </ul>
+
+        <h3>👨‍🌾 Workers</h3>
+        <ul>
+            {% for user in worker_list %}
+                <li>{{ user.user.username }} ({{ user.custom_id }})</li>
+            {% empty %}
+                <li>No worker users found.</li>
+            {% endfor %}
+        </ul>
+
+        <h3>🧑‍🤝‍🧑 Customers</h3>
+        <ul>
+            {% for user in customer_list %}
+                <li>{{ user.user.username }} ({{ user.custom_id }})</li>
+            {% empty %}
+                <li>No customer users found.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- 📅 Daily Activity Report -->
+    <div class="panel">
+        <h2 class="section-title">📅 Daily Activity Report – {{ today }}</h2>
+
+        <h3>🚚 Milk Deliveries</h3>
+        <ul>
+            {% for d in today_deliveries %}
+                <li>{{ d.customer_id }} - {{ d.time }} (by {{ d.submitted_by.username }})</li>
+            {% empty %}
+                <li>No milk deliveries today.</li>
+            {% endfor %}
+        </ul>
+
+        <h3>🥛 Milking Logs</h3>
+        <ul>
+            {% for m in today_milking %}
+                <li>Buffalo {{ m.buffalo_number }} - {{ m.milk_time }} - {{ m.milk_quantity }}L (by {{ m.submitted_by.username }})</li>
+            {% empty %}
+                <li>No milking logs today.</li>
+            {% endfor %}
+        </ul>
+
+        <h3>💊 Health Logs</h3>
+        <ul>
+            {% for h in today_health %}
+                <li>Buffalo {{ h.buffalo_number }} – {{ h.health_notes }} (by {{ h.submitted_by.username }})</li>
+            {% empty %}
+                <li>No health logs today.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- 📊 Charts -->
+    <div class="chart-container">
+        <h3>Milk Deliveries per Day</h3>
+        <canvas id="deliveryChart"></canvas>
+    </div>
+
+    <div class="chart-container" style="margin-top: 40px;">
+        <h3>Buffalo Milking per Day</h3>
+        <canvas id="milkingChart"></canvas>
+    </div>
+
+
+    <div class="dashboard-wrapper">
+  <!-- Sidebar -->
+   
+  <div class="toggle-btn" onclick="toggleSidebar()">☰</div>
+  <nav class="sidebar">
+    <div class="logo">Dairy App</div>
+    <ul>
+      <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+      <li><a href="#">Users</a></li>
+      <li><a href="#">Reports</a></li>
+      <li><a href="{% url 'logout' %}">Logout</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main content -->
+  <div class="main-content">
+    <!-- your .container, .panel, forms etc go here -->
+    <div class="container">
+      {% comment %} your existing content here {% endcomment %}
+    </div>
+  </div>
+</div>
+
+
+
+    <!-- 🔚 Footer -->
+    <div class="footer-links">
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+</div>
+
+<!-- ✅ JSON Chart Data -->
+<script id="chart-data" type="application/json">
+{
+    "labels": {{ labels|safe }},
+    "delivery": {{ delivery_data|safe }},
+    "milking": {{ milking_data_chart|safe }}
+}
+</script>
+
+<!-- 📈 Chart.js -->
+<script>
+    const chartData = JSON.parse(document.getElementById('chart-data').textContent);
+
+    new Chart(document.getElementById('deliveryChart'), {
+        type: 'bar',
+        data: {
+            labels: chartData.labels,
+            datasets: [{
+                label: 'Milk Deliveries',
+                data: chartData.delivery,
+                backgroundColor: 'rgba(66, 165, 245, 0.7)'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' },
+                title: {
+                    display: true,
+                    text: 'Milk Deliveries Per Day'
+                }
+            }
+        }
+    });
+
+    new Chart(document.getElementById('milkingChart'), {
+        type: 'line',
+        data: {
+            labels: chartData.labels,
+            datasets: [{
+                label: 'Milking Litres',
+                data: chartData.milking,
+                borderColor: 'rgba(76, 175, 80, 1)',
+                fill: false,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' },
+                title: {
+                    display: true,
+                    text: 'Milking Quantity Per Day'
+                }
+            }
+        }
+    });
+</script>
+
+<script>
+function toggleSidebar() {
+  document.querySelector('.sidebar').classList.toggle('active');
+}
+</script>
+
+
+</body>
+</html>

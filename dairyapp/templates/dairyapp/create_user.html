@@ -1,0 +1,38 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create New User</title>
+    <link rel="stylesheet" href="{% static 'dairyapp/css/create_user.css' %}">
+</head>
+<body>
+
+    <h2>Create New User</h2>
+
+    <div class="form-container">
+        <form method="post" action="{% url 'create_user' %}">
+            {% csrf_token %}
+            
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="group">Role:</label>
+            <select id="group" name="group" required>
+                <option value="" disabled selected>-- Select Role --</option>
+                <option value="Admin">Admin</option>
+                <option value="Staff">Staff</option>
+                <option value="Worker">Worker</option>
+                <option value="Customer">Customer</option>
+            </select>
+
+            <button type="submit">Create User</button>
+        </form>
+    </div>
+
+</body>
+</html>

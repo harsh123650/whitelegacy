@@ -1,0 +1,206 @@
+{% load static %}
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WhiteLegacy</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'dairyapp/css/index.css' %}">
+  </head>
+
+  <body>
+<header class="navbar navbar-dark bg-dark fixed-top py-3">
+  <div class="container d-flex justify-content-between align-items-center">
+    <a href="#" class="navbar-brand d-flex align-items-center gap-2 mb-0">
+      <strong>WhiteLegacy</strong>
+    </a>
+
+
+    <nav class="d-flex gap-4">
+      <a class="nav-link text-white" href="#">Home</a>
+      <a class="nav-link text-white" href="#">Our Story</a>
+      <a class="nav-link text-white" href="#">Product</a>
+      <a class="nav-link text-white" href="#">Support</a>
+      <a class="nav-link text-white" href="#">Contact</a>
+    </nav>
+
+    <a href="#" class="text-white">
+      <img src="{% static 'bk2.png' %}" alt="Cart" width="75" height="75" />
+    </a>
+  </div>
+</header>
+
+<section class="hero-section text-center">
+  <div class="container position-relative">
+    <h1 class="fw-bold display-5 text-shadow-1">Crafted for purity</h1>
+    <p class="lead text-muted mb-4">Delivering farm-fresh milk to your doorstep</p>
+    <div class="d-flex justify-content-center flex-wrap gap-3">
+      <a href="{% url 'login' %}" class="btn btn-primary">Start</a>
+    </div>
+    <div class="product-device shadow-sm d-none d-md-block"></div>
+    <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
+  </div>
+</section>
+
+<main>
+  <div class="container px-4 py-5">
+    <div class="row row-cols-1 row-cols-lg-2 align-items-stretch g-4 py-5">
+
+      <!-- Card 1 -->
+      <div class="col">
+        <div class="card card-1 h-100 overflow-hidden text-white rounded-4 shadow-lg">
+          <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
+            <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Freshness You Can See.</h2>
+            <p class="lead">Live delivery updates and transparent dairy operations.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="col">
+        <div class="card card-2 h-100 overflow-hidden text-white rounded-4 shadow-lg">
+          <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
+            <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Modern Dairy, Traditional Quality.</h2>
+            <p class="lead">A digital approach to age-old purity</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="col">
+        <div class="card card-3 h-100 overflow-hidden text-white rounded-4 shadow-lg">
+          <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
+            <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">From Our Buffaloes to Your Breakfast.</h2>
+            <p class="lead">Manage subscriptions, deliveries, and quality – all in one place.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="col">
+        <div class="card card-4 h-100 overflow-hidden text-white rounded-4 shadow-lg">
+          <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
+            <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">A Smarter Way to Drink Fresh.</h2>
+            <p class="lead">Daily delivery logs and more.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="col">
+        <div class="card card-5 h-100 overflow-hidden text-white rounded-4 shadow-lg">
+          <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
+            <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Delivering Trust With Every Bottle.</h2>
+            <p class="lead">Reusable glass packaging. No compromises.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="col">
+        <div class="card card-6 h-100 overflow-hidden text-white rounded-4 shadow-lg">
+          <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
+            <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Healthy Dairy, Happy Homes.</h2>
+            <p class="lead">Your personalized milk dashboard is just a click away.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 7 -->
+      <div class="col">
+        <div class="card card-7 h-100 overflow-hidden text-white rounded-4 shadow-lg">
+          <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
+            <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Where Tech Meets Tradition.</h2>
+            <p class="lead">Digitally powered dairy tracking for modern families.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 8 -->
+      <div class="col">
+        <div class="card card-8 h-100 overflow-hidden text-white rounded-4 shadow-lg">
+          <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
+            <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Support</h2>
+            <p class="lead">We’re here when you need us.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<section class="why-dairy">
+  <h2>Why White Legacy ?</h2>
+  <div class="features">
+    <div class="feature">
+      <img src="{% static 'clean.png' %}" alt="100% Clean">
+      <span>100% Clean</span>
+    </div>
+    <div class="feature">
+      <img src="{% static 'fresh.png' %}" alt="Farm Fresh">
+      <span>Farm Fresh</span>
+    </div>
+    <div class="feature">
+      <img src="{% static 'batches.png' %}" alt="Made in Small Batches">
+      <span>Made in Small Batches</span>
+    </div>
+    <div class="feature">
+      <img src="{% static 'tradition.png' %}" alt="Rooted in Tradition">
+      <span>Rooted in Tradition</span>
+    </div>
+  </div>
+</section>
+
+<footer class="container py-5">
+  <div class="row">
+    <div class="col-12 col-md">
+      <small class="d-block mb-3 text-muted">&copy; 2025</small>
+    </div>
+    <div class="col-6 col-md">
+      <h5>Features</h5>
+      <ul class="list-unstyled text-small">
+        <li><a class="link-secondary text-decoration-none" href="#">Fresh Milk Subscriptions</a></li>
+<li><a class="link-secondary text-decoration-none" href="#">Live Delivery Tracking</a></li>
+<li><a class="link-secondary text-decoration-none" href="#">Transparent Sourcing</a></li>
+<li><a class="link-secondary text-decoration-none" href="#">Reusable Packaging</a></li>
+<li><a class="link-secondary text-decoration-none" href="#">Milk Quality Reports</a></li>
+
+      </ul>
+    </div>
+    <div class="col-6 col-md">
+      <h5>Legal</h5>
+<ul class="list-unstyled text-small">
+  <li><a class="link-secondary text-decoration-none" href="#">Privacy Policy</a></li>
+  <li><a class="link-secondary text-decoration-none" href="#">Terms & Conditions</a></li>
+  <li><a class="link-secondary text-decoration-none" href="#">Cookie Policy</a></li>
+</ul>
+
+
+    </div>
+    <div class="col-6 col-md">
+      <h5>Social Media</h5>
+<ul class="list-unstyled text-small">
+  <li><a class="link-secondary text-decoration-none" href="#">Facebook</a></li>
+  <li><a class="link-secondary text-decoration-none" href="#">Instagram</a></li>
+  <li><a class="link-secondary text-decoration-none" href="#">YouTube</a></li>
+</ul>
+
+
+    </div>
+    <div class="col-6 col-md">
+      <h5>About</h5>
+      <ul class="list-unstyled text-small">
+        <li><a class="link-secondary text-decoration-none" href="#">Team</a></li>
+        <li><a class="link-secondary text-decoration-none" href="#">Locations</a></li>
+        <li><a class="link-secondary text-decoration-none" href="#">Privacy</a></li>
+        <li><a class="link-secondary text-decoration-none" href="#">Terms</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

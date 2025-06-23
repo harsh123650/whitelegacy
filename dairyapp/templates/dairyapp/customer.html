@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Panel – Dairy App</title>
+    <link rel="stylesheet" href="{% static 'dairyapp/css/customer.css' %}">
+</head>
+<body>
+
+<header>
+    <h1>Welcome to Customer Panel</h1>
+</header>
+
+<div class="container">
+    <h2>Your Milk Subscription</h2>
+
+    <!-- All Milk Deliveries -->
+    <div class="panel">
+    <h2 class="section-title">📅 Delivery History</h2>
+    {% if all_deliveries %}
+        <ul>
+        {% for delivery in all_deliveries %}
+            <li>{{ delivery.date }} at {{ delivery.time }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No delivery records available.</p>
+    {% endif %}
+</div>
+
+
+    <!-- Subscription (Placeholder) -->
+    <div class="panel-box">
+        <h3>📅 Subscription Details</h3>
+        <p>Your daily milk subscription is active.</p>
+        <p>Please contact staff for subscription changes.</p>
+    </div>
+
+    <!-- QR Payment -->
+    <div class="panel-box">
+        <h3>💳 Payment</h3>
+        <p>Make your payment using the QR code shown below.</p>
+        <img src="{% static 'qr.jpg' %}" alt="QR Code" class="qr-image">
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Worker Panel – Dairy App</title>
+    <link rel="stylesheet" href="{% static 'dairyapp/css/worker.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<header class="bg-dark text-white text-center py-3">
+    <h1>Welcome to Worker Panel</h1>
+</header>
+
+<div class="container mt-4">
+    <form method="post" action="{% url 'submit_worker_data' %}">
+        {% csrf_token %}
+
+        <h2>🐃 Buffalo Info</h2>
+        <div class="mb-3">
+            <label>Buffalo Number:</label>
+            <input type="text" name="buffalo_number" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Date:</label>
+            <input type="date" name="date" class="form-control" required>
+        </div>
+
+        <h2>🥛 Milking Entry</h2>
+        <div class="mb-3">
+            <label>Milking Time:</label>
+            <input type="time" name="milk_time" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Milk Quantity (litres):</label>
+            <input type="number" step="0.1" name="milk_quantity" class="form-control" required>
+        </div>
+
+        <h2>💊 Health Check</h2>
+        <div class="mb-3">
+            <label>Health Notes:</label>
+            <textarea name="health_notes" rows="4" class="form-control" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-success">Submit Data</button>
+    </form>
+</div>
+
+</body>
+</html>

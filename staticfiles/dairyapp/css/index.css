@@ -1,0 +1,207 @@
+/* Text Shadow */
+.text-shadow-1 {
+  text-shadow: 0 .125rem .25rem rgba(0, 0, 0, .25);
+}
+
+/* Body Padding */
+body {
+  padding-top: 4.5rem;
+}
+
+/* Navbar Brand SVG Vertical Alignment */
+.navbar-brand svg {
+  vertical-align: middle;
+}
+
+/* Card Styling */
+.card {
+  background-image: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%);
+  border: none;
+}
+
+/* Hero Section Styling */
+.hero-section {
+  position: relative;
+  background-color: #e8f5e9;
+ /* background-image: url('abcd.png');  /* 👈 Your background image */
+  background-size: cover;            /* Cover full section */
+  background-repeat: no-repeat;
+  background-position: center center;
+  overflow: hidden;
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+}
+
+
+/* Background Decorative Devices */
+.hero-section::before,
+.hero-section::after {
+  content: "";
+  position: absolute;
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.05;
+  z-index: 0;
+}
+
+/* Left Device */
+.hero-section::before {
+  background-image: url('left-device.png');
+  width: 300px;
+  height: 300px;
+  top: -10%;
+  left: -10%;
+}
+
+/* Right Device */
+.hero-section::after {
+  background-image: url('right-device.png');
+  width: 300px;
+  height: 300px;
+  bottom: -10%;
+  right: -10%;
+}
+
+/* Device Shadows */
+.product-device {
+  position: absolute;
+  right: -5%;
+  bottom: -40%;
+  width: 300px;
+  height: 540px;
+  background-color: #333;
+  border-radius: 21px;
+  transform: rotate(30deg);
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+.product-device-2 {
+  position: absolute;
+  top: -35%;
+  left: -10%;
+  width: 300px;
+  height: 540px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 21px;
+  transform: rotate(-30deg);
+  z-index: 1;
+}
+.navbar {
+  background-color: #d2bad6 !important;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+
+.card {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: none;
+  position: relative;
+}
+
+/* Optional: dark overlay for readability */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.card .d-flex {
+  position: relative;
+  z-index: 2;
+}
+
+/* Background images for each card */
+.card-1 {
+  background-image: url('honeyy.png');
+}
+.card-2 {
+  background-image: url('honeyy.png');
+}
+.card-3 {
+  background-image: url('honeyy.png');
+}
+.card-4 {
+  background-image: url('honeyy.png');
+}
+.card-5 {
+  background-image: url('honeyy.png');
+}
+.card-6 {
+  background-image: url('honeyy.png');
+}
+.card-7 {
+  background-image: url('honeyy.png');
+}
+.card-8 {
+  background-image: url('honeyy.png');
+}
+
+
+.why-dairy {
+  background-color: #b4c167;
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.why-dairy h2 {
+  font-size: 28px;
+  margin-bottom: 40px;
+}
+
+.features {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 50px;
+}
+
+.feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 150px;
+}
+
+.feature img {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 15px;
+}
+
+.feature span {
+  font-size: 16px;
+}
+
+
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .hero-section::before,
+  .hero-section::after {
+    display: none;
+  }
+
+  .hero-section h1 {
+    font-size: 2rem;
+  }
+
+  .hero-section p {
+    font-size: 1rem;
+  }
+
+  .product-device,
+  .product-device-2 {
+    display: none;
+  }
+}

@@ -1,0 +1,59 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #e8f5e9;
+    padding: 20px;
+}
+
+header {
+    background-color: #43a047;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.container {
+    margin-top: 40px;
+    max-width: 600px;
+    margin: auto;
+}
+
+form {
+    background: #c8e6c9;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #ccc;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="time"],
+input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+}
+
+button {
+    background: #2e7d32;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1b5e20;
+}
+
+.message {
+    margin-top: 20px;
+    color: green;
+}
