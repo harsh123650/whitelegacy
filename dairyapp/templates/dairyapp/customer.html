@@ -2,48 +2,284 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Customer Panel – Dairy App</title>
-    <link rel="stylesheet" href="{% static 'dairyapp/css/customer.css' %}">
+  <meta charset="UTF-8">
+  <title>Customer Panel – White Legacy</title>
+  <link rel="stylesheet" href="{% static 'dairyapp/css/customer.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  background: #f8f9fa;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #1d3557;
+  color: white;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h2 {
+  margin-bottom: 30px;
+  font-size: 22px;
+  text-align: center;
+}
+
+.sidebar a {
+  color: white;
+  text-decoration: none;
+  margin: 10px 0;
+  font-size: 16px;
+  display: block;
+  padding: 10px;
+  border-radius: 5px;
+  transition: 0.2s;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+  background-color: #457b9d;
+}
+
+.main-content {
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
+}
+
+.panel, .panel-box {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+h1, h2, h3 {
+  color: #000000;
+}
+
+ul {
+  padding-left: 20px;
+}
+li {
+  margin-bottom: 8px;
+}
+
+.qr-image {
+  width: 200px;
+  height: auto;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.logout-link {
+  margin-top: auto;
+  color: #ffb703;
+  font-size: 14px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.hidden {
+  display: none;
+}
+
+.input-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.input-row > div {
+  flex: 1 1 200px;
+  min-width: 150px;
+}
+
+input[type=text],
+input[type=email],
+input[type=number],
+input[type=date],
+input[type=time],
+select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  width: 100%;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 17px;
+}
+
+.btn:hover {
+  background-color: #03995c;
+}
+
+/* Responsive tweak */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+    justify-content: space-around;
+  }
+
+  .main-content {
+    padding: 20px;
+  }
+
+  .input-row {
+    flex-direction: column;
+  }
+}
+
+  </style>
 </head>
 <body>
 
-<header>
-    <h1>Welcome to Customer Panel</h1>
-</header>
+<!-- Sidebar -->
+<div class="sidebar">
+  <h2>🧑‍🧑 Customer Panel</h2>
+  <a href="#" class="sidebar-link active" data-section="home">🏠 Home</a>
+  <a href="#" class="sidebar-link" data-section="deliveries">🗕️ My Deliveries</a>
+  <a href="#" class="sidebar-link" data-section="upi">📲 UPI Payment</a>
+  <a href="#" class="sidebar-link" data-section="other">🏦 Other Payment</a>
+  <a href="{% url 'logout' %}" class="logout-link">🚪 Logout</a>
+</div>
 
-<div class="container">
-    <h2>Your Milk Subscription</h2>
+<!-- Main Content -->
+<div class="main-content">
 
-    <!-- All Milk Deliveries -->
-    <div class="panel">
-    <h2 class="section-title">📅 Delivery History</h2>
+  <!-- Home -->
+  <div id="home" class="panel section-panel">
+    <h2>📦 Subscription Details</h2>
+    <p>Your daily milk subscription is <strong>Active</strong>.</p>
+    <p>Start Date: <strong>{{ subscription_start }}</strong></p>
+    <p>End Date: <strong>{{ subscription_end }}</strong></p>
+    <p>For updates, contact staff.</p>
+  </div>
+
+  <!-- Deliveries -->
+  <div id="deliveries" class="panel section-panel hidden">
+    <h2>🗕️ Delivery History</h2>
     {% if all_deliveries %}
-        <ul>
+      <ul>
         {% for delivery in all_deliveries %}
-            <li>{{ delivery.date }} at {{ delivery.time }}</li>
+          <li>{{ delivery.date }} at {{ delivery.time }} – <span style="color:green">Delivered</span></li>
         {% endfor %}
-        </ul>
+      </ul>
     {% else %}
-        <p>No delivery records available.</p>
+      <p>No delivery records available.</p>
     {% endif %}
+  </div>
+
+  <!-- UPI Payment -->
+  <div id="upi" class="panel section-panel hidden">
+    <h2>📲 UPI Payment</h2>
+    <p>Scan the QR code below to pay using UPI:</p>
+    <img src="{% static 'frame.png' %}" alt="Scan to Subscribe" class="qr-image">
+
+    <p><strong>UPI ID:</strong> whitelegacy@upi</p>
+  </div>
+
+  <!-- Other Payment -->
+  <div id="other" class="panel section-panel hidden">
+    <h2 style="text-align:center; text-decoration: underline;">Other Payment (Card / Bank)</h2>
+    <form action="#">
+      <div class="input-row">
+        <div>
+          <h3>Billing Address</h3>
+          <label>Full Name</label>
+          <input type="text" placeholder="Harshal Patil">
+          <label>Email</label>
+          <input type="email" placeholder="harshalpatil@example.com">
+          <label>Address</label>
+          <input type="text" placeholder="Nashik">
+          <label>City</label>
+          <input type="text" placeholder="Nashik">
+          <div class="input-row">
+            <div>
+              <label>State</label>
+              <input type="text" placeholder="Maharashtra">
+            </div>
+            <div>
+              <label>Zip</label>
+              <input type="text" placeholder="422001">
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3>Payment</h3>
+          <label>Accepted Cards</label>
+          <div class="icon-container">
+            <i class="fa fa-cc-visa" style="color:navy;"></i>
+            <i class="fa fa-cc-amex" style="color:blue;"></i>
+            <i class="fa fa-cc-mastercard" style="color:red;"></i>
+            <i class="fa fa-cc-discover" style="color:orange;"></i>
+          </div>
+          <label>Name on Card</label>
+          <input type="text" placeholder="Harshal Patil">
+          <label>Credit Card Number</label>
+          <input type="text" placeholder="1111-2222-3333-4444">
+          <label>Exp Month</label>
+          <input type="text" placeholder="September">
+          <div class="input-row">
+            <div>
+              <label>Exp Year</label>
+              <input type="text" placeholder="2028">
+            </div>
+            <div>
+              <label>CVV</label>
+              <input type="text" placeholder="352">
+            </div>
+          </div>
+        </div>
+      </div>
+      <label><input type="checkbox" checked> Shipping Address same as Billing</label>
+      <input type="submit" value="Continue to Payment" class="btn">
+    </form>
+  </div>
 </div>
 
+<script>
+  const links = document.querySelectorAll('.sidebar-link[data-section]');
+  const panels = document.querySelectorAll('.section-panel');
 
-    <!-- Subscription (Placeholder) -->
-    <div class="panel-box">
-        <h3>📅 Subscription Details</h3>
-        <p>Your daily milk subscription is active.</p>
-        <p>Please contact staff for subscription changes.</p>
-    </div>
-
-    <!-- QR Payment -->
-    <div class="panel-box">
-        <h3>💳 Payment</h3>
-        <p>Make your payment using the QR code shown below.</p>
-        <img src="{% static 'qr.jpg' %}" alt="QR Code" class="qr-image">
-    </div>
-</div>
+  links.forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = this.getAttribute('data-section');
+      links.forEach(l => l.classList.remove('active'));
+      panels.forEach(p => p.classList.add('hidden'));
+      this.classList.add('active');
+      document.getElementById(target).classList.remove('hidden');
+    });
+  });
+</script>
 
 </body>
 </html>

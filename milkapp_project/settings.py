@@ -95,8 +95,7 @@ USE_TZ = True
 # -------------------------------------
 # Static Files (CSS, JS, Images)
 # -------------------------------------
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'dairyapp' / 'static']  # static inside your app
+
 
 # -------------------------------------
 # Default Primary Key Field Type

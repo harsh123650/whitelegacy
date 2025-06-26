@@ -11,12 +11,58 @@ from datetime import timedelta
 
 from .models import MilkDelivery, MilkingLog, HealthLog, UserProfile
 from .forms import UserCreateForm
+from .models import ContactMessage, SubscriptionRequest
+from .forms import UserCreateForm, ContactForm, SubscribeForm
+
 
 # ----------------------------
 # Home Page
 # ----------------------------
 def index(request):
     return render(request, 'dairyapp/index.html')
+
+def about_view(request):
+    return render(request, 'dairyapp/about.html')
+
+def contact_view(request):
+    return render(request, 'dairyapp/contact.html')
+
+def suscribe_view(request):
+    return render(request, 'dairyapp/suscribe.html')
+
+def guide_view(request):
+    return render(request, 'dairyapp/guide.html')
+
+
+def suscription_select(request):
+    return render(request, 'dairyapp/suscription_select.html')
+
+
+
+
+def contact_view(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('thank_you')  # Optional: or show a success message
+    else:
+        form = ContactForm()
+    return render(request, 'dairyapp/contact.html', {'form': form})
+
+def suscribe_view(request):
+    if request.method == 'POST':
+        form = SubscribeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('thank_you')  # Or show a message
+    else:
+        form = SubscribeForm()
+    return render(request, 'dairyapp/suscribe.html', {'form': form})
+
+
+def thank_you(request):
+    return render(request, 'dairyapp/thank_you.html')
 
 # ----------------------------
 # Login View
@@ -74,22 +120,35 @@ def admin_dashboard(request):
         today = timezone.now().date()
         start_date = today - timedelta(days=6)
 
-        # Users by role
+        # 🔍 Get date filters from GET request
+        milk_date = request.GET.get('milk_date')
+        delivery_date = request.GET.get('delivery_date')
+
+        # User groups
         staff_users = UserProfile.objects.filter(role='staff')
         worker_users = UserProfile.objects.filter(role='worker')
         customer_users = UserProfile.objects.filter(role='customer')
 
-        # Today's records
-        today_deliveries = MilkDelivery.objects.filter(date=today)
-        today_milking = MilkingLog.objects.filter(date=today)
+        # Milking logs (filtered by date if selected)
+        if milk_date:
+            today_milking = MilkingLog.objects.filter(date=milk_date)
+        else:
+            today_milking = MilkingLog.objects.filter(date=today)
+
+        # Delivery logs (filtered by date if selected)
+        if delivery_date:
+            today_deliveries = MilkDelivery.objects.filter(date=delivery_date)
+        else:
+            today_deliveries = MilkDelivery.objects.filter(date=today)
+
         today_health = HealthLog.objects.filter(date=today)
 
-        # Latest
+        # Latest entries
         latest_delivery = MilkDelivery.objects.last()
         milking_data = MilkingLog.objects.last()
         health_data = HealthLog.objects.last()
 
-        # Chart Data (Last 7 Days)
+        # Chart data (last 7 days)
         delivery_summary = (
             MilkDelivery.objects
             .filter(date__gte=start_date)
@@ -126,12 +185,16 @@ def admin_dashboard(request):
             'today_health': today_health,
             'labels': labels,
             'delivery_data': delivery_data,
-            'milking_data_chart': milking_data_chart
+            'milking_data_chart': milking_data_chart,
+            'contact_messages': ContactMessage.objects.order_by('-submitted_at'),
+            'subscriptions': SubscriptionRequest.objects.order_by('-submitted_at'),
         }
+
         return render(request, 'dairyapp/admin.html', context)
 
     except Exception as e:
         return HttpResponse(f"<h1>Error Occurred:</h1><p>{e}</p>")
+
 
 # ----------------------------
 # Delete Views
@@ -160,6 +223,18 @@ def delete_health(request, health_id):
     entry = get_object_or_404(HealthLog, id=health_id)
     entry.delete()
     return redirect('admin_dashboard')
+@login_required
+def delete_contact(request, contact_id):
+    message = get_object_or_404(ContactMessage, id=contact_id)
+    message.delete()
+    return redirect('admin_dashboard')
+
+@login_required
+def delete_subscription(request, subscription_id):
+    subscription = get_object_or_404(SubscriptionRequest, id=subscription_id)
+    subscription.delete()
+    return redirect('admin_dashboard')
+
 
 # ----------------------------
 # Staff Dashboard
@@ -254,3 +329,4 @@ def submit_worker_data(request):
             )
 
     return redirect('worker_dashboard')
+

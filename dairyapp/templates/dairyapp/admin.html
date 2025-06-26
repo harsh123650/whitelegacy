@@ -2,223 +2,326 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Admin Panel – Dairy App</title>
-    <link rel="stylesheet" href="{% static 'dairyapp/css/admin.css' %}">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard – White Legacy</title>
+  <link rel="stylesheet" href="{% static 'dairyapp/css/admin.css' %}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      height: 100vh;
+      background: #f8f9fa;
+    }
+    .sidebar {
+      width: 250px;
+      background-color: #1d3557;
+      color: white;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar h2 {
+      margin-bottom: 40px;
+      font-size: 24px;
+      text-align: center;
+    }
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      margin: 10px 0;
+      font-size: 16px;
+      display: block;
+      padding: 10px;
+      border-radius: 5px;
+      transition: 0.2s;
+    }
+    .sidebar a:hover,
+    .sidebar a.active {
+      background-color: #457b9d;
+    }
+    .main-content {
+      flex: 1;
+      padding: 40px;
+      overflow-y: auto;
+    }
+    .panel {
+      background-color: #fff;
+      padding: 20px;
+      margin-bottom: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+    .btn-danger {
+      background: #e63946;
+      color: white;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .btn-danger:hover {
+      background: #c62828;
+    }
+    form input,
+    form select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    form input[type="submit"],
+    form button {
+      background-color: #1d3557;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+    }
+    form button:hover {
+      background-color: #2a4e77;
+    }
+    h3 {
+      color: #1d3557;
+    }
+    .footer {
+      margin-top: 60px;
+      text-align: center;
+    }
+    .logout-link {
+      margin-top: auto;
+      color: #ffb703;
+      text-align: center;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
 
-<header>
-    <h1>Welcome to Admin Panel</h1>
-</header>
-
-<div class="container">
-
-    <!-- 📦 Latest Milk Delivery -->
-    <div class="panel">
-        <h2 class="section-title">📦 Latest Milk Delivery</h2>
-        {% if latest_delivery %}
-            <p><strong>Customer ID:</strong> {{ latest_delivery.customer_id }}</p>
-            <p><strong>Date:</strong> {{ latest_delivery.date }}</p>
-            <p><strong>Time:</strong> {{ latest_delivery.time }}</p>
-            <form method="post" action="{% url 'delete_delivery' latest_delivery.id %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger">Delete Delivery</button>
-            </form>
-        {% else %}
-            <p>No delivery data submitted yet.</p>
-        {% endif %}
-    </div>
-
-    <!-- 🐃 Buffalo Activity Logs -->
-    <div class="panel">
-        <h2 class="section-title">🐃 Buffalo Activity Logs</h2>
-
-        <h3>🥛 Milking Logs</h3>
-        <ul>
-            {% for m in today_milking %}
-                <li>
-                    Buffalo {{ m.buffalo_number }} – {{ m.milk_time }} – {{ m.milk_quantity }} L (by {{ m.submitted_by.username }})
-                    <form method="post" action="{% url 'delete_milking' m.id %}" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                    </form>
-                </li>
-            {% empty %}
-                <li>No milking logs today.</li>
-            {% endfor %}
-        </ul>
-
-        <h3>💊 Health Logs</h3>
-        <ul>
-            {% for h in today_health %}
-                <li>
-                    Buffalo {{ h.buffalo_number }} – {{ h.health_notes }} (by {{ h.submitted_by.username }})
-                    <form method="post" action="{% url 'delete_health' h.id %}" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                    </form>
-                </li>
-            {% empty %}
-                <li>No health logs today.</li>
-            {% endfor %}
-        </ul>
-    </div>
-
-    <!-- 👤 Create New User -->
-    <div class="panel">
-        <h2 class="section-title">👤 Create New User</h2>
-        <form method="post" action="{% url 'create_user' %}">
-            {% csrf_token %}
-            <div class="form-group">
-                {{ form.username.label_tag }} {{ form.username }}
-            </div>
-            <div class="form-group">
-                {{ form.password.label_tag }} {{ form.password }}
-            </div>
-            <div class="form-group">
-                {{ form.role.label_tag }} {{ form.role }}
-            </div>
-            <input type="submit" value="Create User">
-        </form>
-    </div>
-
-    <!-- 📋 Users Management -->
-    <div class="panel">
-        <h2 class="section-title">📋 Users Management</h2>
-        <button onclick="openUserModal()" class="btn btn-primary">Manage Users</button>
-    </div>
-
-    <!-- 👥 User Modal -->
-    <div id="userModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeUserModal()">&times;</span>
-            <h3>Manage Users</h3>
-
-            <h4>👷 Staff</h4>
-            <ul>
-                {% for user in staff_list %}
-                    <li>
-                        {{ user.user.username }} ({{ user.custom_id }})
-                        <form method="post" action="{% url 'delete_user' user.user.id %}" style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                        </form>
-                    </li>
-                {% empty %}
-                    <li>No staff users found.</li>
-                {% endfor %}
-            </ul>
-
-            <h4>👨‍🌾 Workers</h4>
-            <ul>
-                {% for user in worker_list %}
-                    <li>
-                        {{ user.user.username }} ({{ user.custom_id }})
-                        <form method="post" action="{% url 'delete_user' user.user.id %}" style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                        </form>
-                    </li>
-                {% empty %}
-                    <li>No worker users found.</li>
-                {% endfor %}
-            </ul>
-
-            <h4>🧑‍🤝‍🧑 Customers</h4>
-            <ul>
-                {% for user in customer_list %}
-                    <li>
-                        {{ user.user.username }} ({{ user.custom_id }})
-                        <form method="post" action="{% url 'delete_user' user.user.id %}" style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                        </form>
-                    </li>
-                {% empty %}
-                    <li>No customer users found.</li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-
-    <!-- 📊 Charts -->
-    <div class="chart-container">
-        <h3>Milk Deliveries per Day</h3>
-        <canvas id="deliveryChart"></canvas>
-    </div>
-
-    <div class="chart-container" style="margin-top: 40px;">
-        <h3>Buffalo Milking per Day</h3>
-        <canvas id="milkingChart"></canvas>
-    </div>
-
-    <!-- 🔚 Footer -->
-    <div class="footer-links">
-        <a href="{% url 'logout' %}">Logout</a>
-    </div>
+<!-- Sidebar -->
+<div class="sidebar">
+  <h2>Admin Panel</h2>
+  <a href="#" class="sidebar-link active" data-section="create-user">➕ Create User</a>
+  <a href="#" class="sidebar-link" data-section="customers">👥 Customers</a>
+  <a href="#" class="sidebar-link" data-section="workers">👷 Workers</a>
+  <a href="#" class="sidebar-link" data-section="staff">🧑‍💼 Staff</a>
+  <a href="#" class="sidebar-link" data-section="milking">🥛 Milking Logs</a>
+  <a href="#" class="sidebar-link" data-section="delivery">📦 Delivery Logs</a>
+  <a href="#" class="sidebar-link" data-section="charts">📊 Reports</a>
+  <a href="#" class="sidebar-link" data-section="contact">📞 Contact Us</a>
+  <a href="#" class="sidebar-link" data-section="subscriptions">📝 For Subscribe</a>
+  <a class="logout-link" href="{% url 'logout' %}">🚪 Logout</a>
 </div>
 
-<!-- ✅ JSON Chart Data -->
+<!-- Main Content -->
+<div class="main-content">
+
+  <!-- Create User -->
+  <div id="create-user" class="panel section-panel">
+    <h3>➕ Create New User</h3>
+    <form method="post" action="{% url 'create_user' %}">
+      {% csrf_token %}
+      {{ form.username.label_tag }} {{ form.username }}
+      {{ form.password.label_tag }} {{ form.password }}
+      {{ form.role.label_tag }} {{ form.role }}
+      <input type="submit" value="Create User">
+    </form>
+  </div>
+
+  <!-- Customers -->
+  <div id="customers" class="panel section-panel">
+    <h3>👥 Customers</h3>
+    {% for user in customer_list %}
+      <p>{{ user.user.username }} ({{ user.custom_id }})
+        <form method="post" action="{% url 'delete_user' user.user.id %}" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn-danger">Delete</button>
+        </form>
+      </p>
+    {% empty %}
+      <p>No customers found.</p>
+    {% endfor %}
+  </div>
+
+  <!-- Workers -->
+  <div id="workers" class="panel section-panel">
+    <h3>👷 Workers</h3>
+    {% for user in worker_list %}
+      <p>{{ user.user.username }} ({{ user.custom_id }})
+        <form method="post" action="{% url 'delete_user' user.user.id %}" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn-danger">Delete</button>
+        </form>
+      </p>
+    {% empty %}
+      <p>No workers found.</p>
+    {% endfor %}
+  </div>
+
+  <!-- Staff -->
+  <div id="staff" class="panel section-panel">
+    <h3>🧑‍💼 Staff</h3>
+    {% for user in staff_list %}
+      <p>{{ user.user.username }} ({{ user.custom_id }})
+        <form method="post" action="{% url 'delete_user' user.user.id %}" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn-danger">Delete</button>
+        </form>
+      </p>
+    {% empty %}
+      <p>No staff found.</p>
+    {% endfor %}
+  </div>
+
+  <!-- Milking Logs -->
+  <div id="milking" class="panel section-panel">
+    <h3>🥛 Milking Logs</h3>
+    <form method="get" action="#milking">
+      <label for="milk_date">Select Date:</label>
+      <input type="date" name="milk_date" id="milk_date" value="{{ request.GET.milk_date }}">
+      <button type="submit">Filter</button>
+    </form>
+    {% for m in today_milking %}
+      <p>Buffalo {{ m.buffalo_number }} – {{ m.milk_time }} – {{ m.milk_quantity }}L ({{ m.submitted_by.username }})
+        <form method="post" action="{% url 'delete_milking' m.id %}" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn-danger">Delete</button>
+        </form>
+      </p>
+    {% empty %}
+      <p>No milking logs available.</p>
+    {% endfor %}
+  </div>
+
+  <!-- Delivery Logs -->
+  <div id="delivery" class="panel section-panel">
+    <h3>📦 Delivery Logs</h3>
+    <form method="get" action="#delivery">
+      <label for="delivery_date">Select Date:</label>
+      <input type="date" name="delivery_date" id="delivery_date" value="{{ request.GET.delivery_date }}">
+      <button type="submit">Filter</button>
+    </form>
+    {% for d in delivery_list %}
+      <p>{{ d.customer_id }} – {{ d.date }} – {{ d.time }}
+        <form method="post" action="{% url 'delete_delivery' d.id %}" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn-danger">Delete</button>
+        </form>
+      </p>
+    {% empty %}
+      <p>No delivery logs available.</p>
+    {% endfor %}
+  </div>
+
+  <!-- Contact Messages -->
+  <div id="contact" class="panel section-panel">
+    <h3>📞 Contact Us Messages</h3>
+    {% for msg in contact_messages %}
+      <p>
+        <strong>{{ msg.name }}</strong> ({{ msg.email }})<br>
+        {{ msg.message }}<br>
+        <small>{{ msg.submitted_at }}</small><br>
+        <form method="post" action="{% url 'delete_contact' msg.id %}" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn-danger">Delete</button>
+        </form>
+      </p>
+    {% empty %}
+      <p>No contact messages yet.</p>
+    {% endfor %}
+  </div>
+
+  <!-- Subscription Requests -->
+  <div id="subscriptions" class="panel section-panel">
+    <h3>📝 For Subscribe Requests</h3>
+    {% for sub in subscriptions %}
+      <p>
+        <strong>{{ sub.name }}</strong><br>
+        Mobile: {{ sub.mobile }}<br>
+        Address: {{ sub.address }}<br>
+        Litres: {{ sub.litre_needed }}<br>
+        <small>{{ sub.submitted_at }}</small><br>
+        <form method="post" action="{% url 'delete_subscription' sub.id %}" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn-danger">Delete</button>
+        </form>
+      </p>
+    {% empty %}
+      <p>No subscription requests yet.</p>
+    {% endfor %}
+  </div>
+
+  <!-- Charts -->
+  <div id="charts" class="panel section-panel">
+    <h3>📊 Reports</h3>
+    <canvas id="deliveryChart"></canvas>
+    <canvas id="milkingChart" style="margin-top: 40px;"></canvas>
+  </div>
+
+  <div class="footer">
+    <p>&copy; 2025 White Legacy Admin Panel</p>
+  </div>
+</div>
+
+<!-- Chart Data -->
 <script id="chart-data" type="application/json">
 {
-    "labels": {{ labels|safe }},
-    "delivery": {{ delivery_data|safe }},
-    "milking": {{ milking_data_chart|safe }}
+  "labels": {{ labels|safe }},
+  "delivery": {{ delivery_data|safe }},
+  "milking": {{ milking_data_chart|safe }}
 }
 </script>
 
-<!-- 📈 Chart.js -->
+<!-- Tab Switching -->
 <script>
-    const chartData = JSON.parse(document.getElementById('chart-data').textContent);
-    new Chart(document.getElementById('deliveryChart'), {
-        type: 'bar',
-        data: {
-            labels: chartData.labels,
-            datasets: [{
-                label: 'Milk Deliveries',
-                data: chartData.delivery,
-                backgroundColor: 'rgba(66, 165, 245, 0.7)'
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { position: 'top' },
-                title: { display: true, text: 'Milk Deliveries Per Day' }
-            }
-        }
-    });
+  const links = document.querySelectorAll('.sidebar-link');
+  const panels = document.querySelectorAll('.section-panel');
 
-    new Chart(document.getElementById('milkingChart'), {
-        type: 'line',
-        data: {
-            labels: chartData.labels,
-            datasets: [{
-                label: 'Milking Litres',
-                data: chartData.milking,
-                borderColor: 'rgba(76, 175, 80, 1)',
-                fill: false,
-                tension: 0.4
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { position: 'top' },
-                title: { display: true, text: 'Milking Quantity Per Day' }
-            }
-        }
+  links.forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = this.getAttribute('data-section');
+      links.forEach(l => l.classList.remove('active'));
+      panels.forEach(panel => panel.style.display = 'none');
+      document.getElementById(target).style.display = 'block';
+      this.classList.add('active');
     });
+  });
+  panels.forEach((p, i) => p.style.display = (i === 0) ? 'block' : 'none');
+</script>
 
-    function openUserModal() {
-        document.getElementById("userModal").style.display = "block";
+<!-- Chart JS -->
+<script>
+  const chartData = JSON.parse(document.getElementById('chart-data').textContent);
+
+  new Chart(document.getElementById('deliveryChart'), {
+    type: 'bar',
+    data: {
+      labels: chartData.labels,
+      datasets: [{
+        label: 'Milk Deliveries',
+        data: chartData.delivery,
+        backgroundColor: 'rgba(66, 165, 245, 0.7)'
+      }]
     }
-    function closeUserModal() {
-        document.getElementById("userModal").style.display = "none";
+  });
+
+  new Chart(document.getElementById('milkingChart'), {
+    type: 'line',
+    data: {
+      labels: chartData.labels,
+      datasets: [{
+        label: 'Milking (L)',
+        data: chartData.milking,
+        borderColor: 'rgba(76, 175, 80, 1)',
+        fill: false
+      }]
     }
+  });
 </script>
 
 </body>

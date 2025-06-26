@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us - White Legacy</title>
+    <link rel="stylesheet" href="{% static 'dairyapp/css/contact.css' %}">
+</head>
+
+<body>
+    <section class="contact-us">
+        <div class="container">
+            <h1 class="contact">Contact Form</h1>
+            <p>Please fill in all fields to reach us.</p>
+
+            {% if form.errors %}
+                <div style="color: red; margin-bottom: 15px;">
+                    <strong>Errors:</strong>
+                    <ul>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ field.label }}: {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <p class="bold">
+                    {{ form.name.label_tag }}<br>
+                    {{ form.name }}
+                </p>
+
+                <p class="bold">
+                    {{ form.email.label_tag }}<br>
+                    {{ form.email }}
+                </p>
+
+                <p class="bold">
+                    {{ form.message.label_tag }}<br>
+                    {{ form.message }}
+                </p>
+
+                <p class="bold">
+                    {{ form.subject.label_tag }}<br>
+                    {{ form.subject }}
+                </p>
+
+                <br>
+                <input type="submit" value="Send" class="bold">
+            </form>
+        </div>
+    </section>
+</body>
+
+</html>

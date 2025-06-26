@@ -8,6 +8,17 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
+    path('about/', views.about_view, name='about'),
+    path('contact/', views.contact_view, name='contact'),
+    path('suscribe/', views.suscribe_view, name='suscribe'),
+    path('guide/', views.guide_view, name='guide'),
+    path('suscription_select/', views.suscription_select, name='suscription_select'),
+    path('thank-you/', views.thank_you, name='thank_you'),
+    path('delete-contact/<int:contact_id>/', views.delete_contact, name='delete_contact'),
+    path('delete-subscription/<int:subscription_id>/', views.delete_subscription, name='delete_subscription'),
+
+    
+    
 
     # ----------------------------
     # Dashboards (Role-Based)
@@ -23,10 +34,10 @@ urlpatterns = [
     # ----------------------------
     path('create_user/', views.create_user_view, name='create_user'),
     # dairyapp/urls.py
-path('delete_user/<int:user_id>/', views.delete_user, name='delete_user'),
-path('delete_delivery/<int:delivery_id>/', views.delete_delivery, name='delete_delivery'),
-path('delete_milking/<int:milking_id>/', views.delete_milking, name='delete_milking'),
-path('delete_health/<int:health_id>/', views.delete_health, name='delete_health'),
+    path('delete_user/<int:user_id>/', views.delete_user, name='delete_user'),
+    path('delete_delivery/<int:delivery_id>/', views.delete_delivery, name='delete_delivery'),
+    path('delete_milking/<int:milking_id>/', views.delete_milking, name='delete_milking'),
+    path('delete_health/<int:health_id>/', views.delete_health, name='delete_health'),
 
 
 

@@ -31,3 +31,19 @@ class HealthLog(models.Model):
     date = models.DateField(default=timezone.now)                     # ✅ Default value
     health_notes = models.TextField()
     submitted_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+
+
+class ContactMessage(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    subject = models.CharField(max_length=150)
+    message = models.TextField()
+    submitted_at = models.DateTimeField(auto_now_add=True)
+
+
+class SubscriptionRequest(models.Model):
+    name = models.CharField(max_length=100)
+    mobile = models.CharField(max_length=15)
+    address = models.TextField()
+    litre_needed = models.DecimalField(max_digits=5, decimal_places=2)
+    submitted_at = models.DateTimeField(auto_now_add=True)

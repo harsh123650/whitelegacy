@@ -1,10 +1,15 @@
 from django.contrib import admin
 from django.urls import path, include
 
-urlpatterns = [
-    # Django default admin site (not used in your custom app, but okay to keep)
-    path('admin/', admin.site.urls),
+# ✅ याला import करणं आवश्यक आहे!
+from django.conf import settings
+from django.conf.urls.static import static
 
-    # All app-level routes (home, login, dashboards, etc.)
+urlpatterns = [
+    path('admin/', admin.site.urls),
     path('', include('dairyapp.urls')),
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

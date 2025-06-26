@@ -5,44 +5,240 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>WhiteLegacy</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'dairyapp/css/index.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   </head>
 
   <body>
-<header class="navbar navbar-dark bg-dark fixed-top py-3">
-  <div class="container d-flex justify-content-between align-items-center">
-    <a href="#" class="navbar-brand d-flex align-items-center gap-2 mb-0">
-      <strong>WhiteLegacy</strong>
-    </a>
+
+  <nav id="navbar">
+    <input type="checkbox" id="check">
+    <label for="check" class="checkbtn">
+        <i class="fas fa-bars"></i>
+    </label>
+    <img class="logo-image" src="{% static 'Logo1.jpg' %}" alt="" height="200"alt="" width="100">
+    <ul>
+        <li class="item"><a href="{% url 'index' %}">Home</a></li>
+        <li class="item"><a href="{% url 'guide' %}">Guide</a></li>
+        <li class="item"><a href="{% url 'suscribe' %}">For Suscribe</a></li>
+        <li class="item"><a href="{% url 'contact' %}">Contact Us</a></li>
+        <li class="item"><a href="{% url 'about' %}">About Us</a></li>
+    </ul>
+    <style>
+ /* ======= Font and Global ======= */
+body {
+  font-family: 'Merriweather', serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ======= Navbar ======= */
+#navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 110px;
+  background-color: #b4c167;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  z-index: 999;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.logo-image {
+  height: 90px;
+}
+
+.checkbtn {
+  font-size: 30px;
+  color: #0cb648;
+  cursor: pointer;
+  display: none;
+}
+
+#check {
+  display: none;
+}
+
+#navbar ul {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+  list-style: none;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+#navbar ul li {
+  display: inline-block;
+}
+
+#navbar ul li a {
+  color: #001253;
+  font-size: 20px;
+  padding: 8px 16px;
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
+
+#navbar ul li a:hover {
+  background-color: #064e3b;
+  color: white;
+}
+
+/* ======= Delivery Process Section ======= */
+.delivery-process {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 80px 20px;
+  background-color: #f6f9fc;
+  margin-top: 120px; /* So content doesn't hide behind navbar */
+}
+
+.delivery-process div {
+  background-color: #EEF1FF;
+  border: 3px solid #7895B2;
+  border-radius: 20px;
+  height: 320px;
+  width: 320px;
+  margin: 20px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.delivery-process div:hover {
+  transform: scale(1.03);
+}
+
+.delivery-process div img {
+  height: 160px;
+  width: 280px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.delivery-process div h3 {
+  color: #001253;
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.delivery-process div p {
+  font-size: 16px;
+  color: #333;
+  line-height: 1.4;
+}
+.hero-section {
+  background-image: url("{% static 'dairyapp/images/background.png' %}");
+}
+/* ======= Responsive ======= */
+@media (max-width: 768px) {
+  .checkbtn {
+    display: block;
+  }
+
+  #navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+  }
+
+  #navbar ul {
+    flex-direction: column;
+    position: absolute;
+    top: 110px;
+    left: -100%;
+    width: 100%;
+    background: rgb(230, 234, 245);
+    transition: 0.5s;
+    padding: 20px 0;
+  }
+
+  #check:checked ~ ul {
+    left: 0;
+  }
+
+  #navbar ul li {
+    margin: 10px 0;
+  }
+
+  .delivery-process div {
+    width: 90%;
+    height: auto;
+  }
+
+  .delivery-process div img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+ 
+
+</style>
 
 
-    <nav class="d-flex gap-4">
-      <a class="nav-link text-white" href="#">Home</a>
-      <a class="nav-link text-white" href="#">Our Story</a>
-      <a class="nav-link text-white" href="#">Product</a>
-      <a class="nav-link text-white" href="#">Support</a>
-      <a class="nav-link text-white" href="#">Contact</a>
-    </nav>
 
-    <a href="#" class="text-white">
-      <img src="{% static 'bk2.png' %}" alt="Cart" width="75" height="75" />
-    </a>
+  </nav>
+  
+  
+
+
+  <!-- ✅ Hero Section -->
+  <!-- Hero Section -->
+<section class="hero-section position-relative">
+  <div class="container text-center">
+    <h1 class="display-4">Welcome to White Legacy</h1>
+    <p class="lead">Where purity meets tradition in every drop.</p>
+    <a href="{% url 'login' %}" class="btn btn-primary btn-lg mt-3">LOGIN</a>
   </div>
-</header>
 
-<section class="hero-section text-center">
-  <div class="container position-relative">
-    <h1 class="fw-bold display-5 text-shadow-1">Crafted for purity</h1>
-    <p class="lead text-muted mb-4">Delivering farm-fresh milk to your doorstep</p>
-    <div class="d-flex justify-content-center flex-wrap gap-3">
-      <a href="{% url 'login' %}" class="btn btn-primary">Start</a>
-    </div>
-    <div class="product-device shadow-sm d-none d-md-block"></div>
-    <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
-  </div>
+  <!-- Decorative Devices -->
+  <div class="product-device shadow-sm d-none d-md-block"></div>
+  <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
 </section>
 
+<!--delivery-process sections-->
+    <section class="delivery-process">
+        <div class="milk">
+            <img class="milk-img" src="{% static 'Milk1.jpg' %}"alt="" height="160"alt="" width="280">
+            <h3>Fresh Milk</h3>
+            <br>
+            <p>Enjoy our carefully collected</p>
+            <p>and quality-checked fresh milk.</p>
+
+        </div>
+
+        <div class="curd">
+            <img class="curd-img" src="{% static 'Ghee5.jpg' %}" alt="" height="160"alt="" width="280">
+            <h3>Fresh Ghee</h3>
+            <br>
+            <p>Savor our healthy and</p>
+            <p>delicious farm-fresh curd.</p>
+
+        </div>
+
+        <div class="delivry-girl">
+            <img class="delivery-girl-img" src="{% static 'Delivery2.jpg' %}" alt="" height="160"alt="" width="280">
+            <h3>Daily Delivery</h3>
+            <br>
+            <p>Our safe delivery process for</p>
+            <p>a hygienic product at your door.</p>
+
+        </div>
+
+    </section>
+    
 <main>
   <div class="container px-4 py-5">
     <div class="row row-cols-1 row-cols-lg-2 align-items-stretch g-4 py-5">

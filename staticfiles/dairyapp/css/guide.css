@@ -1,0 +1,53 @@
+body {
+      font-family: 'Merriweather', serif;
+      background-color: #f9f9f9;
+      color: #2c3e50;
+      line-height: 1.8;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 60px auto;
+      padding: 40px;
+      background-color: #ffffff;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      border-radius: 16px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #1d3557;
+      margin-bottom: 30px;
+      font-size: 36px;
+    }
+
+    .step {
+      margin-bottom: 25px;
+      font-size: 18px;
+    }
+
+    .step-number {
+      font-weight: bold;
+      color: #1d3557;
+    }
+
+    p.note {
+      margin-top: 40px;
+      font-style: italic;
+      font-size: 16px;
+      color: #555;
+      text-align: center;
+    }
+
+    @media screen and (max-width: 768px) {
+      .container {
+        padding: 20px;
+        margin: 20px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+    }

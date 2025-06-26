@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscribe - White Legacy</title>
+    <link rel="stylesheet" href="{% static 'dairyapp/css/Suscribe.css' %}">
+</head>
+
+<body>
+<section class="contact-us">
+    <div class="container">
+        <h1 class="contact">Subscribe Form</h1>
+        <p>For Daily Doorstep Milk Delivery</p>
+        <p>₹100 per Litre</p>
+
+        <!-- Show errors if form is invalid -->
+        {% if form.errors %}
+        <div style="color: red; margin-bottom: 15px;">
+            <strong>Please correct the following:</strong>
+            <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ field.label }}: {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <p class="bold">
+                {{ form.name.label_tag }}<br>
+                {{ form.name }}
+            </p>
+
+            <p class="bold">
+                {{ form.mobile.label_tag }}<br>
+                {{ form.mobile }}
+            </p>
+
+            <p class="bold">
+                {{ form.address.label_tag }}<br>
+                {{ form.address }}
+            </p>
+
+            <p class="bold">
+                {{ form.litre_needed.label_tag }}<br>
+                {{ form.litre_needed }}
+            </p>
+
+            <br>
+            <input type="submit" value="Send" class="bold">
+        </form>
+    </div>
+</section>
+</body>
+</html>
