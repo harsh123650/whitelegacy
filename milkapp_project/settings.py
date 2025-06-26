@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # -------------------------------------
 SECRET_KEY = 'dummy-secret-key'  # 🔐 Replace this with a real secret in production
 DEBUG = True
-ALLOWED_HOSTS = ['milkapp-project.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['whitelegacy-1.onrender.com', 'localhost', '127.0.0.1']
 
 
 # -------------------------------------
