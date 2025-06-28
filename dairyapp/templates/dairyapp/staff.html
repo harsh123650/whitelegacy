@@ -107,15 +107,17 @@
 
 <!-- Sidebar -->
 <div class="sidebar">
-  <h2>🧑‍💼 Staff Panel</h2>
-  <a href="#">📦 Submit Delivery</a>
-  <a href="{% url 'logout' %}" class="logout-link">🚪 Logout</a>
+  <h2>Staff Panel</h2>
+  <p><strong>Username:</strong> {{ request.user.username }}</p></p>
+
+  <a href="#">Submit Delivery</a>
+  <a href="{% url 'logout' %}" class="logout-link">Logout</a>
 </div>
 
 <!-- Main Content -->
 <div class="main-content">
   <div class="panel">
-    <h2>📦 Upload Milk Delivery Info</h2>
+    <h2>Upload Milk Delivery Info</h2>
 
     <form method="POST" action="">
       {% csrf_token %}
@@ -134,7 +136,7 @@
       <label for="time">Delivery Time:</label>
       <input type="time" id="time" name="time" required>
 
-      <button type="submit">✅ Submit Delivery Info</button>
+      <button type="submit">Submit Delivery Info</button>
     </form>
   </div>
 </div>

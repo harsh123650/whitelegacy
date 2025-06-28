@@ -102,9 +102,13 @@
 
 <!-- Sidebar -->
 <div class="sidebar">
-    <h2>👷 Worker Panel</h2>
-    <a href="#">📝 Submit Milking & Health</a>
-    <a href="{% url 'logout' %}" class="logout-link">🚪 Logout</a>
+    <h2>Worker Panel</h2>
+    <div class="profile-info">
+  <p><strong>Username:</strong> {{ request.user.username }}</p>
+</div>
+
+    <a href="#">Submit Milking & Health</a>
+    <a href="{% url 'logout' %}" class="logout-link">Logout</a>
 </div>
 
 <!-- Main Panel -->
@@ -113,25 +117,25 @@
         <form method="post" action="{% url 'submit_worker_data' %}">
             {% csrf_token %}
 
-            <h2>🐃 Buffalo Info</h2>
+            <h2>Buffalo Info</h2>
             <label>Buffalo Number:</label>
             <input type="text" name="buffalo_number" required>
 
             <label>Date:</label>
             <input type="date" name="date" required>
 
-            <h2>🥛 Milking Entry</h2>
+            <h2>Milking Entry</h2>
             <label>Milking Time:</label>
             <input type="time" name="milk_time" required>
 
             <label>Milk Quantity (litres):</label>
             <input type="number" step="0.1" name="milk_quantity" required>
 
-            <h2>💊 Health Check</h2>
+            <h2>Health Check</h2>
             <label>Health Notes:</label>
             <textarea name="health_notes" rows="4" required></textarea>
 
-            <button type="submit">✅ Submit Data</button>
+            <button type="submit">Submit Data</button>
         </form>
     </div>
 </div>

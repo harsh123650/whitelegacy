@@ -1,21 +1,17 @@
 from pathlib import Path
 
-# -------------------------------------
+
 # Base project path
-# -------------------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# -------------------------------------
 # Security Settings
-# -------------------------------------
-SECRET_KEY = 'dummy-secret-key'  # 🔐 Replace this with a real secret in production
+SECRET_KEY = 'dummy-secret-key'  # Replace this with a real secret in production
 DEBUG = True
-ALLOWED_HOSTS = ['whitelegacy-1.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['whitelegacy.onrender.com', 'localhost', '127.0.0.1','.onrender.com']
 
 
-# -------------------------------------
 # Installed Apps
-# -------------------------------------
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -28,9 +24,9 @@ INSTALLED_APPS = [
     'dairyapp',
 ]
 
-# -------------------------------------
+
 # Middleware
-# -------------------------------------
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -40,18 +36,18 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
 ]
 
-# -------------------------------------
+
 # URL Configuration
-# -------------------------------------
+
 ROOT_URLCONF = 'milkapp_project.urls'
 
-# -------------------------------------
+
 # Templates
-# -------------------------------------
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],  # You can add global template paths here if needed
+        'DIRS': [], 
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -64,14 +60,13 @@ TEMPLATES = [
     },
 ]
 
-# -------------------------------------
+
 # WSGI Application
-# -------------------------------------
+
 WSGI_APPLICATION = 'milkapp_project.wsgi.application'
 
-# -------------------------------------
+
 # Database
-# -------------------------------------
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -79,35 +74,32 @@ DATABASES = {
     }
 }
 
-# -------------------------------------
+
 # Password Validation (optional)
-# -------------------------------------
+
 AUTH_PASSWORD_VALIDATORS = []
 
-# -------------------------------------
+
 # Localization
-# -------------------------------------
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Kolkata'
 USE_I18N = True
 USE_TZ = True
 
-# -------------------------------------
+
 # Static Files (CSS, JS, Images)
-# -------------------------------------
 
 
-# -------------------------------------
+
 # Default Primary Key Field Type
-# -------------------------------------
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# -------------------------------------
+
 # Custom Login URL (required for @login_required)
-# -------------------------------------
 LOGIN_URL = '/login/'
 # settings.py
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'dairyapp' / 'static']
-STATIC_ROOT = BASE_DIR / 'staticfiles'  # <-- हे line add कर
+STATIC_ROOT = BASE_DIR / 'staticfiles' 

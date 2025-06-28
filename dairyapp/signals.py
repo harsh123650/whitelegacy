@@ -12,5 +12,5 @@ def create_default_groups(sender, **kwargs):
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created and not hasattr(instance, 'userprofile'):
-        # You can skip automatic profile creation if not needed
+        
         pass

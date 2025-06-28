@@ -7,7 +7,57 @@
   <title>Subscription Guide - White Legacy</title>
   <link rel="stylesheet" href="{% static 'dairyapp/css/guide.css' %}">
   <style>
-    
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 40px 20px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      text-align: center;
+      color: #1d3557;
+      margin-bottom: 30px;
+    }
+
+    .step {
+      margin-bottom: 20px;
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    .step-number {
+      font-weight: bold;
+      color: #457b9d;
+      margin-right: 10px;
+    }
+
+    .note {
+      background: #e3f2fd;
+      padding: 15px;
+      border-left: 5px solid #1d3557;
+      border-radius: 6px;
+      font-weight: 500;
+      margin-top: 30px;
+    }
+
+    .highlight {
+      background-color: #fff3cd;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 15px;
+      margin-top: 15px;
+    }
   </style>
 </head>
 <body>
@@ -39,13 +89,20 @@
       <span class="step-number">Step 6:</span> Proceed to the <strong>“Subscription”</strong> section and complete your payment securely to activate your subscription.
     </div>
 
-    <p class="note">If you have any issues or need help, please reach out to our support team through the “Contact Us” section. We're here to help!</p>
-  </div>
-  
-  <div class="step">
-      
+    <div class="step">
+      <span class="step-number">Step 7:</span> After logging in, please <strong>change your password</strong> using the <strong>"Forgot Password"</strong> option or go to the <strong>“Change Password”</strong> section for your security.
+    </div>
 
-    <p class="note"><strong>“Suscription Plans : Monthly (Rupee 3000) Quartaly (Rupee 18000) Yearly (Rupee 36000)”</strong></p>
+    <div class="note">
+      💡 Subscription Plans Available:
+      <ul style="margin-top: 10px;">
+        <li><strong>Monthly:</strong> ₹3000</li>
+        <li><strong>Quarterly:</strong> ₹18000</li>
+        <li><strong>Yearly:</strong> ₹36000</li>
+      </ul>
+    </div>
+
+    <p class="highlight">If you face any issues, please reach out to our team via the <strong>“Contact Us”</strong> section.</p>
   </div>
 
 </body>

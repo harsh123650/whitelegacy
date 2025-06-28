@@ -20,6 +20,12 @@ class ContactForm(forms.ModelForm):
         fields = ['name', 'email', 'message']
 
 class SubscribeForm(forms.ModelForm):
+    litre_needed = forms.IntegerField(
+        min_value=1,
+        label='Litres Needed',
+        widget=forms.NumberInput(attrs={'step': '1', 'min': '1'})
+    )
+
     class Meta:
         model = SubscriptionRequest
-        fields = ['name', 'mobile', 'address', 'litre_needed']
+        fields = ['name', 'email', 'mobile', 'address', 'litre_needed']

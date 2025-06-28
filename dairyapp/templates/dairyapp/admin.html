@@ -3,101 +3,120 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Admin Dashboard – White Legacy</title>
+  <title>Admin Dashboard White Legacy</title>
   <link rel="stylesheet" href="{% static 'dairyapp/css/admin.css' %}">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      height: 100vh;
-      background: #f8f9fa;
-    }
-    .sidebar {
-      width: 250px;
-      background-color: #1d3557;
-      color: white;
-      padding: 30px 20px;
-      display: flex;
-      flex-direction: column;
-    }
-    .sidebar h2 {
-      margin-bottom: 40px;
-      font-size: 24px;
-      text-align: center;
-    }
-    .sidebar a {
-      color: white;
-      text-decoration: none;
-      margin: 10px 0;
-      font-size: 16px;
-      display: block;
-      padding: 10px;
-      border-radius: 5px;
-      transition: 0.2s;
-    }
-    .sidebar a:hover,
-    .sidebar a.active {
-      background-color: #457b9d;
-    }
-    .main-content {
-      flex: 1;
-      padding: 40px;
-      overflow-y: auto;
-    }
-    .panel {
-      background-color: #fff;
-      padding: 20px;
-      margin-bottom: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    }
-    .btn-danger {
-      background: #e63946;
-      color: white;
-      padding: 6px 12px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .btn-danger:hover {
-      background: #c62828;
-    }
-    form input,
-    form select {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-    form input[type="submit"],
-    form button {
-      background-color: #1d3557;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      padding: 8px 16px;
-      border: none;
-      border-radius: 5px;
-    }
-    form button:hover {
-      background-color: #2a4e77;
-    }
-    h3 {
-      color: #1d3557;
-    }
-    .footer {
-      margin-top: 60px;
-      text-align: center;
-    }
-    .logout-link {
-      margin-top: auto;
-      color: #ffb703;
-      text-align: center;
-      font-size: 14px;
-    }
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  height: 100vh;
+  background: #f8f9fa;
+  overflow: hidden;  
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #1d3557;
+  color: white;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;         
+  overflow-y: auto;      
+}
+
+.sidebar h2 {
+  margin-bottom: 40px;
+  font-size: 24px;
+  text-align: center;
+}
+
+.sidebar a {
+  color: white;
+  text-decoration: none;
+  margin: 10px 0;
+  font-size: 16px;
+  display: block;
+  padding: 10px;
+  border-radius: 5px;
+  transition: 0.2s;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+  background-color: #457b9d;
+}
+
+.main-content {
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;    
+  height: 100vh;
+}
+
+.panel {
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.btn-danger {
+  background: #e63946;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-danger:hover {
+  background: #c62828;
+}
+
+form input,
+form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+form input[type="submit"],
+form button {
+  background-color: #1d3557;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+}
+
+form button:hover {
+  background-color: #2a4e77;
+}
+
+h3 {
+  color: #1d3557;
+}
+
+.footer {
+  margin-top: 60px;
+  text-align: center;
+}
+
+.logout-link {
+  margin-top: auto;
+  color: #ffb703;
+  text-align: center;
+  font-size: 14px;
+}
+
   </style>
 </head>
 <body>
@@ -105,16 +124,21 @@
 <!-- Sidebar -->
 <div class="sidebar">
   <h2>Admin Panel</h2>
+  <p>Welcome, <strong>Admin</strong> </p>
+
   <a href="#" class="sidebar-link active" data-section="create-user">➕ Create User</a>
-  <a href="#" class="sidebar-link" data-section="customers">👥 Customers</a>
-  <a href="#" class="sidebar-link" data-section="workers">👷 Workers</a>
-  <a href="#" class="sidebar-link" data-section="staff">🧑‍💼 Staff</a>
-  <a href="#" class="sidebar-link" data-section="milking">🥛 Milking Logs</a>
-  <a href="#" class="sidebar-link" data-section="delivery">📦 Delivery Logs</a>
-  <a href="#" class="sidebar-link" data-section="charts">📊 Reports</a>
-  <a href="#" class="sidebar-link" data-section="contact">📞 Contact Us</a>
-  <a href="#" class="sidebar-link" data-section="subscriptions">📝 For Subscribe</a>
-  <a class="logout-link" href="{% url 'logout' %}">🚪 Logout</a>
+  <a href="#" class="sidebar-link" data-section="customers">Customers</a>
+  <a href="#" class="sidebar-link" data-section="workers">Workers</a>
+  <a href="#" class="sidebar-link" data-section="staff">Staff</a>
+  <a href="#" class="sidebar-link" data-section="milking">Milking Logs</a>
+  <a href="#" class="sidebar-link" data-section="delivery">Delivery Logs</a>
+  <a href="#" class="sidebar-link" data-section="payments">Payments</a>
+  <a href="#" class="sidebar-link" data-section="charts">Reports</a>
+  <a href="#" class="sidebar-link" data-section="contact">Contact Us</a>
+  <a href="#" class="sidebar-link" data-section="subscriptions">For Subscribe</a>
+  <a href="#" class="sidebar-link" data-section="invoices">My Invoices</a>
+
+  <a class="logout-link" href="{% url 'logout' %}">Logout</a>
 </div>
 
 <!-- Main Content -->
@@ -134,7 +158,7 @@
 
   <!-- Customers -->
   <div id="customers" class="panel section-panel">
-    <h3>👥 Customers</h3>
+    <h3>Customers</h3>
     {% for user in customer_list %}
       <p>{{ user.user.username }} ({{ user.custom_id }})
         <form method="post" action="{% url 'delete_user' user.user.id %}" style="display:inline;">
@@ -149,7 +173,7 @@
 
   <!-- Workers -->
   <div id="workers" class="panel section-panel">
-    <h3>👷 Workers</h3>
+    <h3>Workers</h3>
     {% for user in worker_list %}
       <p>{{ user.user.username }} ({{ user.custom_id }})
         <form method="post" action="{% url 'delete_user' user.user.id %}" style="display:inline;">
@@ -164,7 +188,7 @@
 
   <!-- Staff -->
   <div id="staff" class="panel section-panel">
-    <h3>🧑‍💼 Staff</h3>
+    <h3>Staff</h3>
     {% for user in staff_list %}
       <p>{{ user.user.username }} ({{ user.custom_id }})
         <form method="post" action="{% url 'delete_user' user.user.id %}" style="display:inline;">
@@ -179,7 +203,7 @@
 
   <!-- Milking Logs -->
   <div id="milking" class="panel section-panel">
-    <h3>🥛 Milking Logs</h3>
+    <h3>Milking Logs</h3>
     <form method="get" action="#milking">
       <label for="milk_date">Select Date:</label>
       <input type="date" name="milk_date" id="milk_date" value="{{ request.GET.milk_date }}">
@@ -199,13 +223,13 @@
 
   <!-- Delivery Logs -->
   <div id="delivery" class="panel section-panel">
-    <h3>📦 Delivery Logs</h3>
+    <h3>Delivery Logs</h3>
     <form method="get" action="#delivery">
       <label for="delivery_date">Select Date:</label>
       <input type="date" name="delivery_date" id="delivery_date" value="{{ request.GET.delivery_date }}">
       <button type="submit">Filter</button>
     </form>
-    {% for d in delivery_list %}
+    {% for d in today_deliveries %}
       <p>{{ d.customer_id }} – {{ d.date }} – {{ d.time }}
         <form method="post" action="{% url 'delete_delivery' d.id %}" style="display:inline;">
           {% csrf_token %}
@@ -217,9 +241,43 @@
     {% endfor %}
   </div>
 
+ <!-- Payments Section -->
+<div id="payments" class="panel section-panel">
+  <h3>Payments (Filter by Month)</h3>
+
+  <form method="get" action="#payments">
+    <label for="payment_month">Select Month:</label>
+    <select name="payment_month" id="payment_month">
+      <option value="">-- All Months --</option>
+      {% for value, name in months %}
+        <option value="{{ value }}" {% if request.GET.payment_month == value|stringformat:"s" %}selected{% endif %}>{{ name }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit">Filter</button>
+  </form>
+
+  <br>
+
+  {% for pay in payment_data %}
+    <div class="payment-box">
+      <p>
+        <strong>{{ pay.user.username }}</strong> – ₹{{ pay.amount }} – Plan: {{ pay.plan }}<br>
+        <small>{{ pay.date }} at {{ pay.time }}</small><br>
+        <a href="{% url 'download_invoice' pay.id %}" target="_blank" class="btn btn-sm btn-success" style="margin-top: 5px;">
+          📥 Download Invoice
+        </a>
+      </p>
+    </div>
+  {% empty %}
+    <p>No payments found for selected month.</p>
+  {% endfor %}
+</div>
+
+
+
   <!-- Contact Messages -->
   <div id="contact" class="panel section-panel">
-    <h3>📞 Contact Us Messages</h3>
+    <h3>Contact Us Messages</h3>
     {% for msg in contact_messages %}
       <p>
         <strong>{{ msg.name }}</strong> ({{ msg.email }})<br>
@@ -237,7 +295,7 @@
 
   <!-- Subscription Requests -->
   <div id="subscriptions" class="panel section-panel">
-    <h3>📝 For Subscribe Requests</h3>
+    <h3>For Subscribe Requests</h3>
     {% for sub in subscriptions %}
       <p>
         <strong>{{ sub.name }}</strong><br>
@@ -254,10 +312,11 @@
       <p>No subscription requests yet.</p>
     {% endfor %}
   </div>
+  
 
   <!-- Charts -->
   <div id="charts" class="panel section-panel">
-    <h3>📊 Reports</h3>
+    <h3>Reports</h3>
     <canvas id="deliveryChart"></canvas>
     <canvas id="milkingChart" style="margin-top: 40px;"></canvas>
   </div>

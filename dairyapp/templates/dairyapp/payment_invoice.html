@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Payment Invoice White Legacy</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: #f0f2f5;
+      padding: 20px;
+      margin: 0;
+    }
+
+    .invoice-box {
+      background: #fff;
+      max-width: 800px;
+      margin: auto;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      height: 60px;
+    }
+
+    .company-info {
+      text-align: right;
+      font-size: 14px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 30px 0 20px;
+      font-size: 24px;
+      color: #1d3557;
+      border-bottom: 1px dashed #ccc;
+      padding-bottom: 10px;
+    }
+
+    .info-table, .details-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .info-table td {
+      padding: 6px 0;
+      font-size: 15px;
+      color: #333;
+    }
+
+    .details-table th, .details-table td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: left;
+      font-size: 15px;
+    }
+
+    .details-table th {
+      background: #f1f9ff;
+      color: #1d3557;
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 13px;
+      text-align: center;
+      color: #555;
+      font-style: italic;
+    }
+
+    .highlight {
+      background-color: #eaf4ff;
+      border-left: 5px solid #007bff;
+      padding: 10px;
+      margin-top: 20px;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .signature {
+      margin-top: 40px;
+      text-align: right;
+      font-size: 14px;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+
+<div class="invoice-box">
+
+  <div class="header">
+
+    <div class="company-info">
+      <strong>White Legacy Dairy Pvt. Ltd.</strong><br>
+      123 Milk Street, Nashik, MH 411001<br>
+      support@whitelegacy.in
+    </div>
+  </div>
+
+  <h1>Payment Invoice</h1>
+
+  <table class="info-table">
+    <tr>
+      <td><strong>Invoice No:</strong> WL-{{ payment.id|stringformat:"04d" }}</td>
+      <td><strong>Invoice Date:</strong> {{ payment.date }}</td>
+    </tr>
+    <tr>
+      <td><strong>Billed To:</strong> {{ payment.user.username }}</td>
+      <td><strong>Time:</strong> {{ payment.time|time:"h:i A" }}</td>
+    </tr>
+  </table>
+
+  <table class="details-table">
+    <thead>
+      <tr>
+        <th>Plan</th>
+        <th>Description</th>
+        <th>Amount (&#8377;)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ payment.plan }}</td>
+        <td>{{ payment.plan }} Subscription Plan</td>
+        <td>&#8377;{{ payment.amount }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="highlight">
+    Payment received for <strong>{{ payment.plan }}</strong> plan. Thank you!
+  </div>
+
+  <div class="signature">
+    Authorized Signatory<br><br>
+    <img src=" " height="40" alt="Signature">
+  </div>
+
+  <div class="footer">
+    This is a computer-generated invoice and does not require physical signature.
+  </div>
+</div>
+
+</body>
+</html>
