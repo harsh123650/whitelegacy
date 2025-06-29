@@ -7,6 +7,8 @@
 ## 🌐 Live Demo
 
 [Visit Now](https://whitelegacy.onrender.com)
+Click the link above to explore our products, know our story, and understand our process on the White Legacy.
+
 
 ---
 > 🧩 **WhiteLegacy is not a multi-tenant platform.**  
