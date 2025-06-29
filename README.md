@@ -9,7 +9,10 @@
 [Visit Now](https://whitelegacy.onrender.com)
 
 ---
+> 🧩 **WhiteLegacy is not a multi-tenant platform.**  
+> It functions as a dedicated management system for **one farm**, handling all roles (admin, staff, worker, customer) in a closed environment.
 
+---
 ## 🏠 Homepage
 
 * Custom landing page with a fixed navbar, hero section, feature highlights.
@@ -209,4 +212,4 @@ This project is licensed under the MIT License.
 
 ---
 
-> Designed with ❤️ to revolutionize traditional dairy management. Powered by Django and inspired by Indian dairy innovation.
+> ❤️ WhiteLegacy aims to **revolutionize the Indian dairy ecosystem** — just like **Jio transformed India's digital landscape**, this project represents **White Revolution 2.0**, empowering dairy operations with smart digital tools.
