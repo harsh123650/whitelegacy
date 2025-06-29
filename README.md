@@ -86,11 +86,23 @@ Stay connected with us on Instagram, Facebook, and LinkedIn. Social icons are vi
   3. 📲 UPI Payment – Scan QR and make payment
   4. 🏦 Other Payment – Opens custom secure payment form
   5. 🚪 Logout
-* Subscription selector with options:
 
-  * Monthly
-  * Quarterly
-  * Yearly
+### 💰 Subscription-Based Strategy
+
+WhiteLegacy implements a **subscription-driven model** where customers can choose from flexible milk delivery plans:
+
+- **Monthly Plan**
+- **Quarterly Plan**
+- **Yearly Plan**
+
+Upon choosing a plan, the system:
+- Automatically records the **start and end date** of the subscription
+- Shows it in the **customer dashboard**
+- Enables delivery tracking for subscribed periods only
+- Integrates a basic **QR payment flow** and a **testing-based payment option** for demo purposes
+
+This strategy simulates a real-world business approach used by modern dairy brands and milk delivery apps. A full payment gateway integration is planned for future development.
+
 * Upon payment:
 
   * Subscription dates are calculated and saved
