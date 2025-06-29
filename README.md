@@ -1,6 +1,6 @@
-# 🐄 White Legacy – Dairy Farm Web App
+# 🐄 White Legacy – The White Revolution 2.0
 
-**White Legacy** is a comprehensive dairy farm management web application built using Django. It is designed to manage all aspects of a modern dairy business, from administration and staff coordination to worker inputs and customer subscription tracking. The platform ensures smooth operations, transparency, and digital record-keeping for every milk delivery and buffalo activity.
+**White Legacy** is a comprehensive smart dairy web application built using Django. It is designed to manage all aspects of a modern dairy business, from administration and staff coordination to worker inputs and customer subscription tracking. The platform ensures smooth operations, transparency, and digital record-keeping for every milk delivery and buffalo activity.
 
 ---
 
@@ -12,12 +12,27 @@
 
 ## 🏠 Homepage
 
-* Custom landing page with a fixed navbar, hero section, feature highlights, and contact form.
+* Custom landing page with a fixed navbar, hero section, feature highlights.
 * Internal CSS for styling with sections like Delivery Process, Products, Our Guarantee, and Customer Testimonials.
 * 'Start' button redirects to secure login.
 
 ---
+### 📘 About Us
+Learn about the mission and journey of our dairy farm. The About Us page highlights our passion for fresh, organic milk and our commitment to reaching every doorstep with quality and care.
 
+### 📝 Subscribe Form
+Visitors can subscribe for updates, special offers, or plan information. Admins can view and manage all subscriber data through the dashboard.
+
+### 📚 User Guide
+Step-by-step walkthrough for new users explaining login, dashboard access, milk delivery logging, buffalo health updates, and subscription process.
+
+### 📞 Contact Us
+A form-based communication channel for users to reach out. Messages are securely stored and displayed to the admin.
+
+### 📲 Social Media Integration
+Stay connected with us on Instagram, Facebook, and LinkedIn. Social icons are visible in the footer for quick access.
+
+---
 ## 🔐 User Roles & Dashboards
 
 ### 👑 Admin Panel
@@ -26,14 +41,14 @@
 * Auto-create admin if not present.
 * Sidebar-based dashboard with the following features:
 
-  * 📋 View all registered Staff, Workers, and Customers
-  * ➕ Create Staff / Worker / Customer with auto-generated IDs (S001, W001, C001)
-  * ❌ Delete any user
-  * 🥛 View all Milk Delivery Logs (filterable by date)
-  * 🐃 View all Buffalo Milking Logs (filterable by date)
-  * 📬 View Contact Us form entries
-  * 📩 View Subscription form entries
-  * 💳 View Payment data (filtered by Monthly, Quarterly, Yearly plans)
+  * 📋 View all registered Staff(delivery), Workers, and Customers.
+  * ➕ Create Staff(Delivery) / Worker / Customer with auto-generated IDs (S001, W001, C001).
+  * ❌ Delete any user.
+  * 🥛 View all Milk Delivery Logs (filterable by date).
+  * 🐃 View all Buffalo Milking Logs (filterable by date).
+  * 📬 View Contact Us form entries.
+  * 📩 View Subscription form entries.
+  * 💳 View Payment data (filtered by Monthly, Quarterly, Yearly plans) and also download invoice.
 
 ---
 
@@ -53,6 +68,7 @@
 * Add remarks for health check
 * Select date of entry
 * Admin can monitor all logs daily
+* It helps in maintaining cattle health and dry period 
 
 ---
 
@@ -74,6 +90,16 @@
 
   * Subscription dates are calculated and saved
   * Displayed dynamically in dashboard
+  * They also download payment invoice
+ 
+> **🔧 Note:**  
+> The current **`subscription_select` page** is implemented temporarily for **testing and demo purposes only**.  
+> 
+> - It allows customers to select a subscription plan (Monthly, Quarterly, Yearly) and simulate a payment success flow.
+> - Actual **payment gateway integration** (e.g., Razorpay, Stripe, or UPI automation) is **planned for future development**.
+> 
+> This placeholder flow is helpful for showcasing functionality in presentations, testing dashboard updates, and collecting subscription logic feedback.
+
 
 ---
 
