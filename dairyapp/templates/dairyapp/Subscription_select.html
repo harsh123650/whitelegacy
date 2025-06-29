@@ -144,7 +144,7 @@
   <div class="panel">
     <h2>Choose Your Subscription Plan</h2>
 
-    <form method="POST" action="{% url 'Subscription_select' %}">
+    <form method="POST" action="{% url 'subscription_select' %}">
       {% csrf_token %}
 
       <input type="text" name="username" placeholder="Enter Username" required>

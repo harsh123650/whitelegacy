@@ -191,7 +191,7 @@ select {
     <p>For updates, contact staff.</p>
   {% else %}
     <p style="color: red;">No active subscription found.</p>
-    <a href="{% url 'Subscription_select' %}">Subscribe Now</a>
+    <a href="{% url 'subscription_select' %}">Subscribe Now</a>
   {% endif %}
 </div>
 
@@ -242,7 +242,7 @@ select {
   <h2 style="text-align:center; text-decoration: underline;">Other Payment (Card / Bank)</h2>
 
   <!-- Redirect form (GET request only) -->
-  <form method="GET" action="{% url 'Subscription_select' %}">
+  <form method="GET" action="{% url 'subscription_select' %}">
     <div class="input-row">
       <div>
         <h3>Billing Address</h3>

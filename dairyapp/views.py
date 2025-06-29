@@ -72,7 +72,7 @@ from django.contrib.auth.models import User
 from .models import Subscription, Payment
 from datetime import date, timedelta
 
-def Subscription_select(request):
+def subscription_select(request):
     if request.method == "POST":
         username = request.POST.get('username')
         plan = request.POST.get('plan')
@@ -88,14 +88,14 @@ def Subscription_select(request):
         
         if not amount:
             messages.error(request, "Please select a valid subscription plan.")
-            return redirect('Subscription_select')
+            return redirect('subscription_select')
 
         
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
             messages.error(request, "Invalid username.")
-            return redirect('Subscription_select')
+            return redirect('subscription_select')
 
         
         start_date = date.today()
@@ -107,10 +107,10 @@ def Subscription_select(request):
             end_date = start_date + timedelta(days=365)
         else:
             messages.error(request, "Invalid subscription plan selected.")
-            return redirect('Subscription_select')
+            return redirect('subscription_select')
 
         
-        Subscription.objects.create(
+        subscription.objects.create(
             customer=user,
             plan=plan,
             amount=amount,
