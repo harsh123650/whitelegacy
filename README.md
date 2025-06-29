@@ -1,4 +1,4 @@
-# 🐄 White Legacy – The White Revolution 2.0
+#  White Legacy – The White Revolution 2.0
 
 **White Legacy** is a comprehensive smart dairy web application built using Django. It is designed to manage all aspects of a modern dairy business, from administration and staff coordination to worker inputs and customer subscription tracking. The platform ensures smooth operations, transparency, and digital record-keeping for every milk delivery and buffalo activity.
 
