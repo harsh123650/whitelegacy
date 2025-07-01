@@ -9,6 +9,8 @@ from django.template.loader import get_template
 from django.http import HttpResponse
 from datetime import date, timedelta
 import calendar
+from django.http import JsonResponse
+
 import io
 from xhtml2pdf import pisa
 
@@ -76,8 +78,7 @@ def subscription_select(request):
     if request.method == "POST":
         username = request.POST.get('username')
         plan = request.POST.get('plan')
-        
-        
+
         plan_prices = {
             'monthly': 3000,
             'quarterly': 18000,
@@ -85,54 +86,26 @@ def subscription_select(request):
         }
         amount = plan_prices.get(plan)
 
-        
         if not amount:
             messages.error(request, "Please select a valid subscription plan.")
             return redirect('subscription_select')
 
-        
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
             messages.error(request, "Invalid username.")
             return redirect('subscription_select')
 
-        
-        start_date = date.today()
-        if plan == 'monthly':
-            end_date = start_date + timedelta(days=30)
-        elif plan == 'quarterly':
-            end_date = start_date + timedelta(days=90)
-        elif plan == 'yearly':
-            end_date = start_date + timedelta(days=365)
-        else:
-            messages.error(request, "Invalid subscription plan selected.")
-            return redirect('subscription_select')
-
-        
-        subscription.objects.create(
-            customer=user,
-            plan=plan,
-            amount=amount,
-            start_date=start_date,
-            end_date=end_date
-        )
-
-        
-        Payment.objects.create(
-            user=user,
-            plan=plan,
-            amount=amount
-        )
-
-        return render(request, 'dairyapp/subscription_select.html', {
-            'message': "Subscription activated successfully!",
-            'start': start_date,
-            'end': end_date,
+        request.session['subscription_data'] = {
+            'username': username,
+            'plan': plan,
             'amount': amount
-        })
+        }
+
+        return redirect('payment_page')  # Redirect to Razorpay view
 
     return render(request, 'dairyapp/subscription_select.html')
+
 
 
 
@@ -389,7 +362,7 @@ def submit_worker_data(request):
                 submitted_by=request.user
             )
 
-        return redirect('worker_dashboard')  # ✅ POST नंतर redirect
+        return redirect('worker_dashboard')  
 
     return render(request, 'dairyapp/worker.html', {
         'profile': profile
@@ -429,3 +402,75 @@ def delete_contact(request, contact_id):
 def delete_subscription(request, subscription_id):
     get_object_or_404(SubscriptionRequest, id=subscription_id).delete()
     return redirect('admin_dashboard')
+
+
+import razorpay
+from django.conf import settings
+from django.shortcuts import render
+
+@login_required
+def payment_page(request):
+    subscription_data = request.session.get('subscription_data')
+    if not subscription_data:
+        return redirect('subscription_select')
+
+    client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+
+    amount = subscription_data['amount'] * 100  # convert to paise
+
+    payment = client.order.create({
+        "amount": amount,
+        "currency": "INR",
+        "payment_capture": "1"
+    })
+
+    context = {
+        'key_id': settings.RAZORPAY_KEY_ID,
+        'order_id': payment['id'],
+        'amount': amount,
+        'subscription': subscription_data
+    }
+
+    return render(request, 'dairyapp/payment.html', context)
+
+@csrf_exempt
+def payment_success(request):
+    if request.method == "POST":
+        data = request.session.get('subscription_data')
+        if not data:
+            return JsonResponse({'error': 'Session expired'}, status=400)
+
+        username = data['username']
+        plan = data['plan']
+        amount = data['amount']
+
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return JsonResponse({'error': 'User not found'}, status=400)
+
+        start_date = date.today()
+        if plan == 'monthly':
+            end_date = start_date + timedelta(days=30)
+        elif plan == 'quarterly':
+            end_date = start_date + timedelta(days=90)
+        else:
+            end_date = start_date + timedelta(days=365)
+
+        Subscription.objects.create(
+            customer=user,
+            plan=plan,
+            amount=amount,
+            start_date=start_date,
+            end_date=end_date
+        )
+
+        Payment.objects.create(
+            user=user,
+            plan=plan,
+            amount=amount
+        )
+
+        return JsonResponse({'message': 'Payment and subscription recorded successfully'})
+
+    return JsonResponse({'error': 'Invalid request'}, status=400)

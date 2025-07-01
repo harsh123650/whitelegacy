@@ -16,7 +16,8 @@ urlpatterns = [
     path('delete-subscription/<int:subscription_id>/', views.delete_subscription, name='delete_subscription'),
     path('forgot-password/', views.forgot_password_view, name='forgot_password'),
     path('download-invoice/<int:payment_id>/', views.download_invoice, name='download_invoice'),
-
+    path('pay/', views.payment_page, name='payment_page'),
+    path('payment/success/', views.payment_success, name='payment_success'),
 
     
     path('admin_dashboard/', views.admin_dashboard, name='admin_dashboard'),
@@ -31,6 +32,7 @@ urlpatterns = [
     path('delete_delivery/<int:delivery_id>/', views.delete_delivery, name='delete_delivery'),
     path('delete_milking/<int:milking_id>/', views.delete_milking, name='delete_milking'),
     path('delete_health/<int:health_id>/', views.delete_health, name='delete_health'),
+    
 
 
 

@@ -1,17 +1,23 @@
 from pathlib import Path
+import os
 
-
-# Base project path
+# Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Security Settings
-SECRET_KEY = 'dummy-secret-key'  # Replace this with a real secret in production
-DEBUG = True
-ALLOWED_HOSTS = ['whitelegacy.onrender.com', 'localhost', '127.0.0.1','.onrender.com']
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'dummy-secret-key')  # Use env var on Render
 
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-# Installed Apps
+ALLOWED_HOSTS = [
+    'whitelegacy.onrender.com',
+    'localhost',
+    '127.0.0.1',
+    '.onrender.com',
+]
 
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -19,16 +25,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    # Your app
     'dairyapp',
 ]
 
-
-# Middleware
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Helps serve static files on Render
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -36,13 +38,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
 ]
 
-
-# URL Configuration
-
 ROOT_URLCONF = 'milkapp_project.urls'
-
-
-# Templates
 
 TEMPLATES = [
     {
@@ -60,11 +56,11 @@ TEMPLATES = [
     },
 ]
 
-
-# WSGI Application
-
 WSGI_APPLICATION = 'milkapp_project.wsgi.application'
 
+# Razorpay Credentials (secure with env vars on Render)
+RAZORPAY_KEY_ID = os.environ.get('RAZORPAY_KEY_ID', 'rzp_test_MBSoOADwHNy2ye')
+RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET', 'HxBk2iwgG0Ib3CfKuwoLVcYZ')
 
 # Database
 DATABASES = {
@@ -74,32 +70,29 @@ DATABASES = {
     }
 }
 
-
-# Password Validation (optional)
-
+# Password validation (add later for production security)
 AUTH_PASSWORD_VALIDATORS = []
 
-
-# Localization
+# Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Kolkata'
 USE_I18N = True
 USE_TZ = True
 
-
-# Static Files (CSS, JS, Images)
-
-
-
-# Default Primary Key Field Type
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-# Custom Login URL (required for @login_required)
-LOGIN_URL = '/login/'
-# settings.py
-
-STATIC_URL = 'static/'
+# Static files
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'dairyapp' / 'static']
-STATIC_ROOT = BASE_DIR / 'staticfiles' 
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Media files (optional, if using uploads)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# Whitenoise static file settings
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Login redirect
+LOGIN_URL = '/login/'
+
+# Default primary key field type
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

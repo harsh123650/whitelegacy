@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Razorpay Payment</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body style="background-color: #f4f4f4; font-family: Arial, sans-serif; text-align: center; padding-top: 100px;">
+    <h2 style="color: #333;">Pay ₹100</h2>
+
+    <button id="rzp-button" style="
+        background-color: #F37254;
+        color: white;
+        font-size: 18px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    ">
+        Pay Now
+    </button>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    var options = {
+        "key": "{{ key_id }}",
+        "amount": "{{ amount }}",
+        "currency": "INR",
+        "name": "Dairy Subscriptions",
+        "description": "Subscription Payment",
+        "order_id": "{{ order_id }}",
+        "handler": function (response){
+            fetch("{% url 'payment_success' %}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+            }).then(res => res.json())
+              .then(data => {
+                alert(data.message);
+                window.location.href = "{% url 'customer_dashboard' %}";
+            });
+        }
+    };
+
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+</script>
+
+</body>
+</html>
