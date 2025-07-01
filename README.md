@@ -99,7 +99,7 @@ Upon choosing a plan, the system:
 - Automatically records the **start and end date** of the subscription
 - Shows it in the **customer dashboard**
 - Enables delivery tracking for subscribed periods only
-- Integrates a basic **QR payment flow** and a **testing-based payment option** for demo purposes
+- Integrates a basic **Razorpay Gateway** and a **testing-based payment option** for demo purposes
 
 This strategy simulates a real-world business approach used by modern dairy brands and milk delivery apps. A full payment gateway integration is planned for future development.
 
@@ -108,14 +108,6 @@ This strategy simulates a real-world business approach used by modern dairy bran
   * Subscription dates are calculated and saved
   * Displayed dynamically in dashboard
   * They also download payment invoice
- 
-> **🔧 Note:**  
-> The current **`subscription_select` page** is implemented temporarily for **testing and demo purposes only**.  
-> 
-> - It allows customers to select a subscription plan (Monthly, Quarterly, Yearly) and simulate a payment success flow.
-> - Actual **payment gateway integration** (e.g., Razorpay, Stripe, or UPI automation) is **planned for future development**.
-> 
-> This placeholder flow is helpful for showcasing functionality in presentations, testing dashboard updates, and collecting subscription logic feedback.
 
 
 ---
