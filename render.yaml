@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: whitelegacy
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn milkapp_project.wsgi:application
+    envVars:
+      - key: DEBUG
+        value: False
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: RAZORPAY_KEY_ID
+        value: your_razorpay_key_id
+      - key: RAZORPAY_KEY_SECRET
+        value: your_razorpay_key_secret
+    staticPublishPath: staticfiles
