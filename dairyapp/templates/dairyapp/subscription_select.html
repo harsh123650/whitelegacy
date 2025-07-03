@@ -147,7 +147,8 @@
     <form method="POST" action="{% url 'subscription_select' %}">
       {% csrf_token %}
 
-      <input type="text" name="username" placeholder="Enter Username" required>
+      <input type="text" name="username" value="{{ username }}" readonly>
+
 
       <select name="plan" id="plan" onchange="updateAmount()" required>
         <option value="">-- Select Plan --</option>

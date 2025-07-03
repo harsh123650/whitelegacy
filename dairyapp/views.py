@@ -29,6 +29,21 @@ from .forms import (
 )
 
 
+
+from django.http import HttpResponseForbidden
+
+def role_required(allowed_roles=[]):
+    def decorator(view_func):
+        def wrapper(request, *args, **kwargs):
+            if hasattr(request.user, 'userprofile'):
+                role = request.user.userprofile.role
+                if role in allowed_roles:
+                    return view_func(request, *args, **kwargs)
+            return HttpResponseForbidden("⛔ Access Denied: You are not authorized.")
+        return wrapper
+    return decorator
+
+
 # Home & Static Pages
 
 
@@ -74,9 +89,10 @@ from django.contrib.auth.models import User
 from .models import Subscription, Payment
 from datetime import date, timedelta
 
+@login_required
 def subscription_select(request):
     if request.method == "POST":
-        username = request.POST.get('username')
+        username = request.user.username
         plan = request.POST.get('plan')
 
         plan_prices = {
@@ -87,13 +103,26 @@ def subscription_select(request):
         amount = plan_prices.get(plan)
 
         if not amount:
-            messages.error(request, "Please select a valid subscription plan.")
+            if "Please select a valid subscription plan." not in [m.message for m in messages.get_messages(request)]:
+                messages.error(request, "Please select a valid subscription plan.")
             return redirect('subscription_select')
 
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
-            messages.error(request, "Invalid username.")
+            if "Invalid username." not in [m.message for m in messages.get_messages(request)]:
+                messages.error(request, "Invalid username.")
+            return redirect('subscription_select')
+
+        active_subscription = Subscription.objects.filter(
+            customer=user,
+            end_date__gte=date.today()
+        ).first()
+
+        if active_subscription:
+            msg = f"You already have an active subscription until {active_subscription.end_date}."
+            if msg not in [m.message for m in messages.get_messages(request)]:
+                messages.error(request, msg)
             return redirect('subscription_select')
 
         request.session['subscription_data'] = {
@@ -102,9 +131,12 @@ def subscription_select(request):
             'amount': amount
         }
 
-        return redirect('payment_page')  # Redirect to Razorpay view
+        return redirect('payment_page')
 
-    return render(request, 'dairyapp/subscription_select.html')
+    return render(request, 'dairyapp/subscription_select.html', {
+        'username': request.user.username
+    })
+
 
 
 
@@ -180,7 +212,9 @@ def forgot_password_view(request):
 
 
 @login_required
+@role_required(['admin'])
 def admin_dashboard(request):
+    
     try:
         today = timezone.now().date()
         start_date = today - timedelta(days=6)
@@ -259,6 +293,7 @@ def admin_dashboard(request):
 
 
 @login_required
+@role_required(['staff'])
 def staff_dashboard(request):
     customers = UserProfile.objects.filter(role='customer')
     profile = UserProfile.objects.get(user=request.user)  # 🆔 Staff प्रोफाइल
@@ -278,10 +313,12 @@ def staff_dashboard(request):
 
 
 @login_required
+@role_required(['worker'])
 def worker_dashboard(request):
     return render(request, 'dairyapp/worker.html')
 
 @login_required
+@role_required(['customer'])
 def customer_dashboard(request):
     customer = request.user
     profile = UserProfile.objects.get(user=request.user)
@@ -474,3 +511,6 @@ def payment_success(request):
         return JsonResponse({'message': 'Payment and subscription recorded successfully'})
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+
