@@ -120,24 +120,27 @@
     <h2>Upload Milk Delivery Info</h2>
 
     <form method="POST" action="">
-      {% csrf_token %}
+  {% csrf_token %}
 
-      <label for="customer_id">Select Customer:</label>
-      <select id="customer_id" name="customer_id" required>
-        <option value="" disabled selected>Choose a customer</option>
-        {% for customer in customers %}
-          <option value="{{ customer.custom_id }}">{{ customer.custom_id }} – {{ customer.user.username }}</option>
-        {% endfor %}
-      </select>
+  <label for="customer_id">Select Customer:</label>
+  <select id="customer_id" name="customer_id" required>
+    <option value="" disabled selected>Choose a customer</option>
+    {% for customer in customers %}
+      <option value="{{ customer.user.id }}">
+        {{ customer.custom_id }} – {{ customer.user.username }}
+      </option>
+    {% endfor %}
+  </select>
 
-      <label for="date">Delivery Date:</label>
-      <input type="date" id="date" name="date" required>
+  <label for="date">Delivery Date:</label>
+  <input type="date" id="date" name="date" required>
 
-      <label for="time">Delivery Time:</label>
-      <input type="time" id="time" name="time" required>
+  <label for="time">Delivery Time:</label>
+  <input type="time" id="time" name="time" required>
 
-      <button type="submit">Submit Delivery Info</button>
-    </form>
+  <button type="submit">Submit Delivery Info</button>
+</form>
+
   </div>
 </div>
 

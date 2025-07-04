@@ -149,7 +149,7 @@
     {% if all_deliveries %}
       <ul>
         {% for delivery in all_deliveries %}
-          <li>{{ delivery.date }} at {{ delivery.time }} – <span style="color:green">Delivered</span></li>
+          <li><strong>{{ delivery.date }}</strong> at <strong>{{ delivery.time }}</strong> – <span style="color:green">Delivered</span></li>
         {% endfor %}
       </ul>
     {% else %}
@@ -165,17 +165,17 @@
 
     <hr>
     <h3>Your Payment History:</h3>
-    {% for pay in payment_data %}
-      {% if pay.user == request.user %}
+    {% if payment_data %}
+      {% for pay in payment_data %}
         <p>
-          <strong>{{ pay.user.username }}</strong> – ₹{{ pay.amount }} – Plan: {{ pay.plan }}<br>
+          ₹{{ pay.amount }} – Plan: <strong>{{ pay.plan }}</strong><br>
           <small>{{ pay.date }} at {{ pay.time }}</small><br>
           <a href="{% url 'download_invoice' pay.id %}" class="btn">Download Invoice 🧾</a>
         </p>
-      {% endif %}
-    {% empty %}
+      {% endfor %}
+    {% else %}
       <p>No payments found.</p>
-    {% endfor %}
+    {% endif %}
   </div>
 </div>
 
@@ -188,8 +188,12 @@
     link.addEventListener('click', function(e) {
       e.preventDefault();
       const target = this.getAttribute('data-section');
+
+      // Reset active states
       links.forEach(l => l.classList.remove('active'));
       panels.forEach(p => p.classList.add('hidden'));
+
+      // Activate selected panel
       this.classList.add('active');
       document.getElementById(target).classList.remove('hidden');
     });

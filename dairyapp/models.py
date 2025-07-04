@@ -18,13 +18,14 @@ class UserProfile(models.Model):
 # Milk Delivery Logs
 
 class MilkDelivery(models.Model):
-    customer_id = models.CharField(max_length=10)
+    customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='customer_deliveries')
     date = models.DateField()
     time = models.TimeField()
-    submitted_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    submitted_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='staff_deliveries')
 
     def __str__(self):
-        return f"Delivery to {self.customer_id} on {self.date} at {self.time}"
+        return f"Delivery to {self.customer.username} on {self.date} at {self.time}"
+
 
 
 

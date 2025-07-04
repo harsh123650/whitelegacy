@@ -9,6 +9,7 @@ urlpatterns = [
     path('about/', views.about_view, name='about'),
     path('contact/', views.contact_view, name='contact'),
     path('suscribe/', views.suscribe_view, name='suscribe'),
+
     path('guide/', views.guide_view, name='guide'),
     path('subscription_select/', views.subscription_select, name='subscription_select'),
     path('thank-you/', views.thank_you, name='thank_you'),
@@ -18,6 +19,7 @@ urlpatterns = [
     path('download-invoice/<int:payment_id>/', views.download_invoice, name='download_invoice'),
     path('pay/', views.payment_page, name='payment_page'),
     path('payment/success/', views.payment_success, name='payment_success'),
+    
 
     
     path('admin_dashboard/', views.admin_dashboard, name='admin_dashboard'),
