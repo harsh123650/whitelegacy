@@ -1,8 +1,5 @@
 from pathlib import Path
 import os
-from dotenv import load_dotenv
-load_dotenv()  # load .env vars if present
-
 
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -11,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'dummy-secret-key')  # Use env var on Render
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = [
     'whitelegacy.onrender.com',
@@ -65,19 +62,13 @@ WSGI_APPLICATION = 'milkapp_project.wsgi.application'
 RAZORPAY_KEY_ID = os.environ.get('RAZORPAY_KEY_ID', 'rzp_test_MBSoOADwHNy2ye')
 RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET', 'HxBk2iwgG0Ib3CfKuwoLVcYZ')
 
-import dj_database_url
-
+# Database
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get("DATABASE_URL"),
-        conn_max_age=600,  # optional: for persistent connections
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
-
-
-
-
-
 
 # Password validation (add later for production security)
 AUTH_PASSWORD_VALIDATORS = []
