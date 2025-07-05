@@ -30,6 +30,8 @@ pyhanko-certvalidator==0.27.0
 PyMySQL==1.1.1
 pypdf==5.6.1
 python-bidi==0.6.6
+python-decouple==3.8
+python-dotenv==1.1.1
 PythonTurtle==0.3.2
 PyYAML==6.0.2
 razorpay==1.4.2

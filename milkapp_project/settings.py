@@ -1,5 +1,8 @@
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+load_dotenv()  # load .env vars if present
+
 
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -62,17 +65,17 @@ WSGI_APPLICATION = 'milkapp_project.wsgi.application'
 RAZORPAY_KEY_ID = os.environ.get('RAZORPAY_KEY_ID', 'rzp_test_MBSoOADwHNy2ye')
 RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET', 'HxBk2iwgG0Ib3CfKuwoLVcYZ')
 
-# ✅ MySQL Database Configuration
+import dj_database_url
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('DB_NAME', 'milkapp_db'),
-        'USER': os.environ.get('DB_USER', 'root'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', 'Admin@123'),
-        'HOST': os.environ.get('DB_HOST', 'localhost'),
-        'PORT': os.environ.get('DB_PORT', '3306'),
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
+        conn_max_age=600,  # optional: for persistent connections
+    )
 }
+
+
+
 
 
 
