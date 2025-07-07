@@ -201,6 +201,18 @@ Password: Harshal@123
 ```
 
 * Admin account is automatically created if not found on login.
+You also use some credentials which currently run:
+customer :
+username:cust3
+password:cust123
+
+staff:
+username:staff3
+password:staff3
+
+worker:
+username:worker3
+password:worker3
 
 ---
 
