@@ -20,6 +20,8 @@ urlpatterns = [
     path('pay/', views.payment_page, name='payment_page'),
     path('payment/success/', views.payment_success, name='payment_success'),
     
+    
+    
 
     
     path('admin_dashboard/', views.admin_dashboard, name='admin_dashboard'),
@@ -34,6 +36,8 @@ urlpatterns = [
     path('delete_delivery/<int:delivery_id>/', views.delete_delivery, name='delete_delivery'),
     path('delete_milking/<int:milking_id>/', views.delete_milking, name='delete_milking'),
     path('delete_health/<int:health_id>/', views.delete_health, name='delete_health'),
+    path('delete_invoice/<int:pk>/', views.delete_invoice, name='delete_invoice'),
+
     
 
 
