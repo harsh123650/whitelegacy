@@ -13,7 +13,7 @@
   display: flex;
   height: 100vh;
   background: #f8f9fa;
-  overflow: hidden;  
+  overflow: hidden;
 }
 
 .sidebar {
@@ -23,58 +23,72 @@
   padding: 30px 20px;
   display: flex;
   flex-direction: column;
-  height: 100vh;         
-  overflow-y: auto;      
+  height: 100vh;
+  overflow-y: auto;
+  position: fixed;
+  left: 0;
+  top: 0;
 }
 
 .sidebar h2 {
-  margin-bottom: 40px;
-  font-size: 24px;
+  margin-bottom: 30px;
+  font-size: 22px;
   text-align: center;
+  color: #f1faee;
+}
+
+.sidebar p {
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #a8dadc;
 }
 
 .sidebar a {
   color: white;
   text-decoration: none;
-  margin: 10px 0;
-  font-size: 16px;
+  margin: 8px 0;
+  font-size: 15px;
   display: block;
-  padding: 10px;
-  border-radius: 5px;
-  transition: 0.2s;
+  padding: 10px 15px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
 }
 
 .sidebar a:hover,
 .sidebar a.active {
   background-color: #457b9d;
+  color: #f1faee;
+}
+
+.logout-link {
+  margin-top: auto;
+  font-size: 14px;
+  text-align: center;
+  color: #ffb703;
 }
 
 .main-content {
   flex: 1;
-  padding: 40px;
-  overflow-y: auto;    
-  height: 100vh;
+  margin-left: 250px;
+  padding: 40px 60px;
+  overflow-y: auto;
+  background-color: #f8f9fa;
+  min-height: 100vh;
 }
 
 .panel {
-  background-color: #fff;
-  padding: 20px;
-  margin-bottom: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
-.btn-danger {
-  background: #e63946;
-  color: white;
-  padding: 6px 12px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.btn-danger:hover {
-  background: #c62828;
+h3 {
+  color: #1d3557;
+  font-size: 20px;
+  margin-bottom: 20px;
 }
 
 form input,
@@ -84,6 +98,7 @@ form select {
   margin-bottom: 15px;
   border-radius: 6px;
   border: 1px solid #ccc;
+  font-size: 15px;
 }
 
 form input[type="submit"],
@@ -92,30 +107,62 @@ form button {
   color: white;
   font-weight: bold;
   cursor: pointer;
-  padding: 8px 16px;
+  padding: 10px 20px;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
+  transition: background-color 0.3s;
 }
 
-form button:hover {
+form button:hover,
+form input[type="submit"]:hover {
   background-color: #2a4e77;
 }
 
-h3 {
-  color: #1d3557;
+.btn-danger {
+  background-color: #e63946;
+  color: white;
+  padding: 6px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.btn-danger:hover {
+  background-color: #c62828;
 }
 
 .footer {
-  margin-top: 60px;
   text-align: center;
+  margin-top: 60px;
+  color: #999;
+  font-size: 13px;
 }
 
-.logout-link {
-  margin-top: auto;
-  color: #ffb703;
-  text-align: center;
-  font-size: 14px;
+/* Responsive Fix for Small Screens */
+@media (max-width: 768px) {
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    overflow-x: auto;
+    justify-content: space-between;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 20px;
+  }
+
+  .sidebar a {
+    font-size: 14px;
+    padding: 8px 12px;
+    white-space: nowrap;
+  }
 }
+
 
   </style>
 </head>
@@ -133,7 +180,6 @@ h3 {
   <a href="#" class="sidebar-link" data-section="milking">Milking Logs</a>
   <a href="#" class="sidebar-link" data-section="delivery">Delivery Logs</a>
   <a href="#" class="sidebar-link" data-section="payments">Payments</a>
-  <a href="#" class="sidebar-link" data-section="charts">Reports</a>
   <a href="#" class="sidebar-link" data-section="contact">Contact Us</a>
   <a href="#" class="sidebar-link" data-section="subscriptions">For Subscribe</a>
 
@@ -159,12 +205,11 @@ h3 {
   <div id="customers" class="panel section-panel">
     <h3>Customers</h3>
     {% for user in customer_list %}
-      <p>{{ user.user.username }} ({{ user.custom_id }})
-        <form method="post" action="{% url 'delete_user' user.user.id %}" style="display:inline;">
-          {% csrf_token %}
-          <button type="submit" class="btn-danger">Delete</button>
-        </form>
-      </p>
+      <p id="user-row-{{ user.user.id }}">
+  {{ user.user.username }} ({{ user.custom_id }})
+  <button type="button" class="btn-danger delete-user" data-id="{{ user.user.id }}">Delete</button>
+</p>
+
     {% empty %}
       <p>No customers found.</p>
     {% endfor %}
@@ -174,12 +219,11 @@ h3 {
   <div id="workers" class="panel section-panel">
     <h3>Workers</h3>
     {% for user in worker_list %}
-      <p>{{ user.user.username }} ({{ user.custom_id }})
-        <form method="post" action="{% url 'delete_user' user.user.id %}" style="display:inline;">
-          {% csrf_token %}
-          <button type="submit" class="btn-danger">Delete</button>
-        </form>
-      </p>
+      <p id="user-row-{{ user.user.id }}">
+  {{ user.user.username }} ({{ user.custom_id }})
+  <button type="button" class="btn-danger delete-user" data-id="{{ user.user.id }}">Delete</button>
+</p>
+
     {% empty %}
       <p>No workers found.</p>
     {% endfor %}
@@ -189,11 +233,11 @@ h3 {
   <div id="staff" class="panel section-panel">
     <h3>Staff</h3>
     {% for user in staff_list %}
-      <p>{{ user.user.username }} ({{ user.custom_id }})
-        <form method="post" action="{% url 'delete_user' user.user.id %}" style="display:inline;">
-          {% csrf_token %}
-          <button type="submit" class="btn-danger">Delete</button>
-        </form>
+      <p id="user-row-{{ user.user.id }}">
+  {{ user.user.username }} ({{ user.custom_id }})
+  <button type="button" class="btn-danger delete-user" data-id="{{ user.user.id }}">Delete</button>
+</p>
+
       </p>
     {% empty %}
       <p>No staff found.</p>
@@ -209,12 +253,11 @@ h3 {
       <button type="submit">Filter</button>
     </form>
     {% for m in today_milking %}
-      <p>Buffalo {{ m.buffalo_number }} – {{ m.milk_time }} – {{ m.milk_quantity }}L ({{ m.submitted_by.username }})
-        <form method="post" action="{% url 'delete_milking' m.id %}" style="display:inline;">
-          {% csrf_token %}
-          <button type="submit" class="btn-danger">Delete</button>
-        </form>
-      </p>
+      <p id="milking-row-{{ m.id }}">
+  Buffalo {{ m.buffalo_number }} – {{ m.milk_time }} – {{ m.milk_quantity }}L ({{ m.submitted_by.username }})
+  <button type="button" class="btn-danger delete-milking" data-id="{{ m.id }}">Delete</button>
+</p>
+
     {% empty %}
       <p>No milking logs available.</p>
     {% endfor %}
@@ -229,12 +272,11 @@ h3 {
       <button type="submit">Filter</button>
     </form>
     {% for d in today_deliveries %}
-      <p>{{ d.customer_id }} – {{ d.date }} – {{ d.time }}
-        <form method="post" action="{% url 'delete_delivery' d.id %}" style="display:inline;">
-          {% csrf_token %}
-          <button type="submit" class="btn-danger">Delete</button>
-        </form>
-      </p>
+      <p id="delivery-row-{{ d.id }}">
+  {{ d.customer_id }} – {{ d.date }} – {{ d.time }}
+  <button type="button" class="btn-danger delete-delivery" data-id="{{ d.id }}">Delete</button>
+</p>
+
     {% empty %}
       <p>No delivery logs available.</p>
     {% endfor %}
@@ -258,15 +300,18 @@ h3 {
   <br>
 
   {% for pay in payment_data %}
-    <div class="payment-box">
-      <p>
-        <strong>{{ pay.user.username }}</strong> – ₹{{ pay.amount }} – Plan: {{ pay.plan }}<br>
-        <small>{{ pay.date }} at {{ pay.time }}</small><br>
-        <a href="{% url 'download_invoice' pay.id %}" target="_blank" class="btn btn-sm btn-success" style="margin-top: 5px;">
-          📥 Download Invoice
-        </a>
-      </p>
-    </div>
+  <div class="payment-box" id="payment-row-{{ pay.id }}">
+    <p>
+      <strong>{{ pay.user.username }}</strong> – ₹{{ pay.amount }} – Plan: {{ pay.plan }}<br>
+      <small>{{ pay.date }} at {{ pay.time }}</small><br>
+
+      <a href="{% url 'download_invoice' pay.id %}" target="_blank" class="btn btn-sm btn-success" style="margin-top: 5px;">
+        📥 Download Invoice
+      </a>
+
+      <button type="button" class="btn-danger delete-invoice" data-id="{{ pay.id }}" style="margin-left: 10px;">🗑 Delete</button>
+    </p>
+  </div>
   {% empty %}
     <p>No payments found for selected month.</p>
   {% endfor %}
@@ -311,28 +356,8 @@ h3 {
       <p>No subscription requests yet.</p>
     {% endfor %}
   </div>
-  
 
-  <!-- Charts -->
-  <div id="charts" class="panel section-panel">
-    <h3>Reports</h3>
-    <canvas id="deliveryChart"></canvas>
-    <canvas id="milkingChart" style="margin-top: 40px;"></canvas>
-  </div>
 
-  <div class="footer">
-    <p>&copy; 2025 White Legacy Admin Panel</p>
-  </div>
-</div>
-
-<!-- Chart Data -->
-<script id="chart-data" type="application/json">
-{
-  "labels": {{ labels|safe }},
-  "delivery": {{ delivery_data|safe }},
-  "milking": {{ milking_data_chart|safe }}
-}
-</script>
 
 <!-- Tab Switching -->
 <script>
@@ -352,35 +377,77 @@ h3 {
   panels.forEach((p, i) => p.style.display = (i === 0) ? 'block' : 'none');
 </script>
 
-<!-- Chart JS -->
 <script>
-  const chartData = JSON.parse(document.getElementById('chart-data').textContent);
+  // Generic AJAX delete function
+  function ajaxDelete(url, rowId) {
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === 'success') {
+        document.getElementById(rowId).remove();
+        alert(data.message);
+      } else {
+        alert("Delete failed.");
+      }
+    });
+  }
 
-  new Chart(document.getElementById('deliveryChart'), {
-    type: 'bar',
-    data: {
-      labels: chartData.labels,
-      datasets: [{
-        label: 'Milk Deliveries',
-        data: chartData.delivery,
-        backgroundColor: 'rgba(66, 165, 245, 0.7)'
-      }]
-    }
+  // USER delete handler
+  document.querySelectorAll('.delete-user').forEach(btn => {
+    btn.addEventListener('click', function () {
+      const id = this.dataset.id;
+      ajaxDelete(`/delete_user/${id}/`, `user-row-${id}`);
+    });
   });
 
-  new Chart(document.getElementById('milkingChart'), {
-    type: 'line',
-    data: {
-      labels: chartData.labels,
-      datasets: [{
-        label: 'Milking (L)',
-        data: chartData.milking,
-        borderColor: 'rgba(76, 175, 80, 1)',
-        fill: false
-      }]
-    }
+  // MILKING delete handler
+  document.querySelectorAll('.delete-milking').forEach(btn => {
+    btn.addEventListener('click', function () {
+      const id = this.dataset.id;
+      ajaxDelete(`/delete_milking/${id}/`, `milking-row-${id}`);
+    });
   });
+
+  // DELIVERY delete handler
+  document.querySelectorAll('.delete-delivery').forEach(btn => {
+    btn.addEventListener('click', function () {
+      const id = this.dataset.id;
+      ajaxDelete(`/delete_delivery/${id}/`, `delivery-row-${id}`);
+    });
+  });
+
+  // CONTACT delete handler (optional - if you convert it to AJAX too)
+  document.querySelectorAll('.delete-contact').forEach(btn => {
+    btn.addEventListener('click', function () {
+      const id = this.dataset.id;
+      ajaxDelete(`/delete_contact/${id}/`, `contact-row-${id}`);
+    });
+  });
+
+  // SUBSCRIPTION delete handler (optional)
+  document.querySelectorAll('.delete-subscription').forEach(btn => {
+    btn.addEventListener('click', function () {
+      const id = this.dataset.id;
+      ajaxDelete(`/delete_subscription/${id}/`, `subscription-row-${id}`);
+    });
+  });
+
+   // INVOICE delete handler
+  document.querySelectorAll('.delete-invoice').forEach(btn => {
+    btn.addEventListener('click', function () {
+      const id = this.dataset.id;
+      ajaxDelete(`/delete_invoice/${id}/`, `payment-row-${id}`);
+    });
+  });
+
 </script>
+
 
 </body>
 </html>
